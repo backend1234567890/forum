@@ -1,0 +1,114 @@
+swagger: "2.0"
+info:
+  title: Forum API
+  description: |
+    API description in for Toohak.
+    All error strings are required to be clear descriptive message. The descriptive message won't change the marks you receive when being automarked as long as you make an attempt for each one to be custom, but they will improve the usability of the frontend.
+  version: 1.0.0
+ 
+schemes:
+  - http
+
+tags:
+  - name: "Main"
+    description: Login, signup, logout, clear
+  - name: "Chat"
+    description: Control anything relates to chat
+
+components:
+  prim:
+    username:
+      type: string
+      example: faizarradhin
+      description: Username, no space, all lowercase, should be unique
+    displayName:
+      type: string
+      example: Faiz Arradhin
+      description: Name that is displayed, can be anything
+    password:
+      type: string
+      example: Classified12345
+      description: at least 8 characters, contain 1 lowercase, 1 uppercase, and 1 number
+
+
+  path:
+  header:
+    Token:
+      in: header
+      name: token
+      required: true
+      schema:
+        type: string
+  query:
+  body:
+    register:
+      in: body
+      name: body
+      required: true
+      schema:
+        type: object
+        properties:
+          username:
+            $ref: '#/components/prim/username'
+          displayName:
+            $ref: '#/components/prim/displayName'
+          password:
+            $ref: '#/components/prim/password'
+  return:
+    Token:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/prim/Token'
+    Error:
+      properties:
+        error:
+          type: string
+          enum:
+            - error
+    Empty:
+      type: object
+
+
+paths:
+  /user/auth/register:
+    post:
+      summary: Register new user.
+      description: Creating a new userId and token
+    parameters:
+      - $ref: '#/components/body/register'
+    tags:
+      - "Main"
+    responses:
+      200:
+        description: OK
+        schema:
+          $ref: '#/components/return/Token'
+      400:
+        description: |
+          Return error if any of the following conditions met:
+          - Username has space
+          - Username contains capital letter
+          - Username has already been used by other user
+          - Less than 8 characters
+          - Password does not contain at least 1 lowercase
+          - Password does not contain at least 1 uppercase
+          - Password does not contain at least 1 number
+  /clear:
+    delete:
+      summary: Reset the state of the application back to the start.
+      description: Wipe all details back to the beggining as if the data structure is fresh.
+      tags:
+        # - "By Topic: Other"
+        - "Main"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/components/return/Empty'
+
+securityDefinitions:
+  Iteration 3 Token Authentication:
+    type: apiKey
+    name: token
+    in: header
