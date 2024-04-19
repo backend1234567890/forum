@@ -60,6 +60,9 @@ components:
     Description:
       type: string
       example: Description doesn't need to be ver long
+    messageId:
+      type: number
+      example: 98362
   group:
     List:
       type: array
@@ -88,6 +91,8 @@ components:
             $ref: '#/components/prim/Me'
           sender:
             $ref: '#/components/prim/displayName'
+          messageId:
+            $ref: '#/components/prim/messageId'
           message:
             $ref: '#/components/prim/message'
           timeSent:
@@ -146,7 +151,15 @@ components:
             $ref: '#/components/prim/title'
           description:
             $ref: '#/components/prim/Description'
-
+    sendMessage:
+      in: body
+      name: body
+      required: true
+      schema:
+        type: object
+        properties:
+          message: 
+            $ref: '#/components/prim/message' 
   return:
     Token:
       type: object
@@ -182,6 +195,11 @@ components:
           $ref: '#/components/prim/Description'
         messages:
           $ref: '#/components/group/Messages'
+    sendMessage:
+      type: object
+      properties:
+        messageId: 
+          $ref: '#/components/prim/messageId'
 paths:
   /user/auth/register:
     post:
@@ -310,6 +328,33 @@ paths:
           description: |
             Return error if any of the following conditions met:
             - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+  /user/topic/{topicid}/post:
+    post:
+      summary: Send a message to forum
+      description: yeey
+      parameters:
+        - $ref: '#/components/header/Token'
+        - $ref: '#/components/path/TopicId'
+        - $ref: '#/components/body/sendMessage'
+      tags:
+        - "Chat"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#components/return/sendMessage'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+        400:
+          description: |
+            Return error if any of the following conditions met:
+            - Message is empty
           schema:
             $ref: '#/components/return/Error'
   /clear:
