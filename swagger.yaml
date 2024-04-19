@@ -54,6 +54,19 @@ components:
             $ref: '#/components/prim/displayName'
           password:
             $ref: '#/components/prim/password'
+          repeatPassword:
+            $ref: '#/components/prim/password'
+    login:
+      in: body
+      name: body
+      required: true
+      schema:
+        type: object
+        properties:
+          username:
+            $ref: '#/components/prim/username'
+          password:
+            $ref: '#/components/prim/password'
   return:
     Token:
       type: object
@@ -94,6 +107,23 @@ paths:
             - Password does not contain at least 1 lowercase
             - Password does not contain at least 1 uppercase
             - Password does not contain at least 1 number
+  /user/auth/login:
+    post:
+      summary: Login to the forum
+      description: Deliver the user to the forum, create token for access
+      parameters:
+        - $ref: '#components/body/login'
+      tags: 
+        - "Main"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#components/return/Token'
+        400:
+          description: |
+            Return error if any of the following conditions met:
+            - 
   /clear:
     delete:
       summary: Reset the state of the application back to the start.
