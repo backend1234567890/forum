@@ -38,17 +38,25 @@ components:
       example: Topic Title
       description: more than 5 characters, less than 50 characters
     topicId:
-      type: number
+      type: integer
       example: 1234567
       description: integer, don't forget hashing
     userId:
-      type: number
+      type: integer
       example: 1234567
       description: integer, don't forget hashing
     message:
       type: string
       example: This is an example of a message
       description: just normal string
+    timeSent:
+      type: integer
+      example: 1683019484
+      description: In seconds. You can find more information that here https://en.wikipedia.org/wiki/Unix_time
+    Me:
+      type: boolean
+      example: true
+      description: to determine, am I the sender or other people
   group:
     List:
       type: object
@@ -60,11 +68,30 @@ components:
         lastMessage:
           type: object
           properties:
+            me:
+              $ref: '#/components/prim/Me'
             sender:
-              $ref: '#/components/prim/userId'
+              $ref: '#/components/prim/displayName'
             message: 
               $ref: '#/components/prim/message'
+    Messages:
+      type: object
+      properties:
+        me:
+          $ref: '#/components/prim/Me'
+        sender:
+          $ref: '#/components/prim/displayName'
+        message:
+          $ref: '#/components/prim/message'
+        timeSent:
+          $ref: '#/components/prim/timeSent'
   path:
+    TopicId:
+      in: path
+      name: topicId
+      required: true
+      schema:
+        $ref: '#/components/prim/topicId'
   header:
     Token:
       in: header
@@ -135,8 +162,15 @@ components:
       properties:
         topics:
           $ref: '#/components/group/List'
-
-
+    Info:
+      type: object
+      properties:
+        topicId:
+          $ref: '#/components/prim/topicId'
+        title:
+          $ref: '#/components/prim/title'
+        messages:
+          $ref: '#/components/group/Messages'
 paths:
   /user/auth/register:
     post:
@@ -233,7 +267,7 @@ paths:
       summary: Collections of topics briefly
       description: Returns collection of topics briefly
       parameters:
-        $ref: '#/components/header/Token'
+        - $ref: '#/components/header/Token'
       tags:
         - "Chat"
       responses:
@@ -241,6 +275,26 @@ paths:
           description: OK
           schema: 
             $ref: '#/components/return/List'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+  /user/topic/{topicid}/info:
+    get:
+      summary: Complete data of a forum
+      description: So much data should be returned here
+      parameters:
+        - $ref: '#/components/header/Token'
+        - $ref: '#/components/path/TopicId'
+      tags:
+        - "Chat"
+      responses:
+        200:
+          description: OK
+          schema: 
+            $ref: '#/components/return/Info'
         401:
           description: |
             Return error if any of the following conditions met:
