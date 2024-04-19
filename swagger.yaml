@@ -62,32 +62,36 @@ components:
       example: Description doesn't need to be ver long
   group:
     List:
-      type: object
-      properties:
-        topicId: 
-          $ref: '#/components/prim/topicId'
-        title:
-          $ref: '#/components/prim/title'
-        lastMessage:
-          type: object
-          properties:
-            me:
-              $ref: '#/components/prim/Me'
-            sender:
-              $ref: '#/components/prim/displayName'
-            message: 
-              $ref: '#/components/prim/message'
+      type: array
+      items:
+        type: object
+        properties:
+          topicId: 
+            $ref: '#/components/prim/topicId'
+          title:
+            $ref: '#/components/prim/title'
+          lastMessage:
+            type: object
+            properties:
+              me:
+                $ref: '#/components/prim/Me'
+              sender:
+                $ref: '#/components/prim/displayName'
+              message: 
+                $ref: '#/components/prim/message'
     Messages:
-      type: object
-      properties:
-        me:
-          $ref: '#/components/prim/Me'
-        sender:
-          $ref: '#/components/prim/displayName'
-        message:
-          $ref: '#/components/prim/message'
-        timeSent:
-          $ref: '#/components/prim/timeSent'
+      type: array
+      items:
+        type: object
+        properties:
+          me:
+            $ref: '#/components/prim/Me'
+          sender:
+            $ref: '#/components/prim/displayName'
+          message:
+            $ref: '#/components/prim/message'
+          timeSent:
+            $ref: '#/components/prim/timeSent'
   path:
     TopicId:
       in: path
