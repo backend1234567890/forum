@@ -17,6 +17,10 @@ tags:
 
 components:
   prim:
+    Token:
+      type: string
+      example: aswefnsjbfjnbwefin
+      description: This is the hash value, no one knows the real token!!
     username:
       type: string
       example: faizarradhin
@@ -39,6 +43,7 @@ components:
       required: true
       schema:
         type: string
+        $ref: '#/components/prim/Token'
   query:
   body:
     register:
@@ -107,23 +112,46 @@ paths:
             - Password does not contain at least 1 lowercase
             - Password does not contain at least 1 uppercase
             - Password does not contain at least 1 number
+          scheme:
+            $ref: '#/components/return/Error'
   /user/auth/login:
     post:
       summary: Login to the forum
       description: Deliver the user to the forum, create token for access
       parameters:
-        - $ref: '#components/body/login'
+        - $ref: '#/components/body/login'
       tags: 
         - "Main"
       responses:
         200:
           description: OK
           schema:
-            $ref: '#components/return/Token'
+            $ref: '#/components/return/Token'
         400:
           description: |
             Return error if any of the following conditions met:
-            - 
+            - Wrong username or password
+          schema:
+            $ref: '#/components/return/Error'
+  /user/auth/logout:
+    post:
+      summary: Kick out from access
+      description: Noooo
+      parameters:
+        - $ref: '#/components/header/Token'
+      tags:
+        - "Main"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/components/return/Empty'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
   /clear:
     delete:
       summary: Reset the state of the application back to the start.
