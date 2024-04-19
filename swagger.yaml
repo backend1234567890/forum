@@ -33,6 +33,14 @@ components:
       type: string
       example: Classified12345
       description: at least 8 characters, contain 1 lowercase, 1 uppercase, and 1 number
+    title:
+      type: string
+      example: Topic Title
+      description: more than 5 characters, less than 50 characters
+    topicId:
+      type: number
+      example: 1234567
+      description: integer, don't forget hashing
 
 
   path:
@@ -72,6 +80,16 @@ components:
             $ref: '#/components/prim/username'
           password:
             $ref: '#/components/prim/password'
+    TopicCreate:
+      in: body
+      name: body
+      required: true
+      schema: 
+        type: object
+        properties:
+          title:
+            $ref: '#/components/prim/title'
+
   return:
     Token:
       type: object
@@ -86,6 +104,11 @@ components:
             - error
     Empty:
       type: object
+    Topic:
+      type: object
+      properties:
+        topicId:
+          $ref: '#/components/prim/topicId'
 
 
 paths:
@@ -112,7 +135,7 @@ paths:
             - Password does not contain at least 1 lowercase
             - Password does not contain at least 1 uppercase
             - Password does not contain at least 1 number
-          scheme:
+          schema:
             $ref: '#/components/return/Error'
   /user/auth/login:
     post:
@@ -150,6 +173,33 @@ paths:
           description: |
             Return error if any of the following conditions met:
             - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+  /user/topic/create:
+    post:
+      summary: Create new topic
+      description: new conversation here
+      parameters:
+        - $ref: '#/components/header/Token'
+        - $ref: '#/components/body/TopicCreate'
+      tags:
+        - "Chat"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/components/return/TopicCreate'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+        400:
+          description: |
+            Return error if any of the following conditions met:
+            - Title is less than 5 characters
+            - Title is more than 50 characters
           schema:
             $ref: '#/components/return/Error'
   /clear:
