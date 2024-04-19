@@ -41,8 +41,29 @@ components:
       type: number
       example: 1234567
       description: integer, don't forget hashing
-
-
+    userId:
+      type: number
+      example: 1234567
+      description: integer, don't forget hashing
+    message:
+      type: string
+      example: This is an example of a message
+      description: just normal string
+  group:
+    List:
+      type: object
+      properties:
+        topicId: 
+          $ref: '#/components/prim/topicId'
+        title:
+          $ref: '#/components/prim/title'
+        lastMessage:
+          type: object
+          properties:
+            sender:
+              $ref: '#/components/prim/userId'
+            message: 
+              $ref: '#/components/prim/message'
   path:
   header:
     Token:
@@ -109,6 +130,11 @@ components:
       properties:
         topicId:
           $ref: '#/components/prim/topicId'
+    List:
+      type: object
+      properties:
+        topics:
+          $ref: '#/components/group/List'
 
 
 paths:
@@ -188,7 +214,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/components/return/TopicCreate'
+            $ref: '#/components/return/Topic'
         401:
           description: |
             Return error if any of the following conditions met:
@@ -200,6 +226,25 @@ paths:
             Return error if any of the following conditions met:
             - Title is less than 5 characters
             - Title is more than 50 characters
+          schema:
+            $ref: '#/components/return/Error'
+  /user/topic/list:
+    get:
+      summary: Collections of topics briefly
+      description: Returns collection of topics briefly
+      parameters:
+        $ref: '#/components/header/Token'
+      tags:
+        - "Chat"
+      responses:
+        200:
+          description: OK
+          schema: 
+            $ref: '#/components/return/List'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
           schema:
             $ref: '#/components/return/Error'
   /clear:
