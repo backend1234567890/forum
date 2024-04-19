@@ -57,6 +57,9 @@ components:
       type: boolean
       example: true
       description: to determine, am I the sender or other people
+    Description:
+      type: string
+      example: Description doesn't need to be ver long
   group:
     List:
       type: object
@@ -137,6 +140,8 @@ components:
         properties:
           title:
             $ref: '#/components/prim/title'
+          description:
+            $ref: '#/components/prim/Description'
 
   return:
     Token:
@@ -169,6 +174,8 @@ components:
           $ref: '#/components/prim/topicId'
         title:
           $ref: '#/components/prim/title'
+        description:
+          $ref: '#/components/prim/Description'
         messages:
           $ref: '#/components/group/Messages'
 paths:
