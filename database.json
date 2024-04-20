@@ -2,25 +2,5 @@
   "users": [],
   "tokens": [],
   "topics": [],
-  "messages": [],
-  "pinnedTopics": [
-    {
-      "topicId": 587486218,
-      "title": "How to do something?",
-      "description": "Do not know what to explain",
-      "pin": true
-    },
-    {
-      "topicId": 187627777,
-      "title": "Who am I?",
-      "description": "No one knows",
-      "pin": true
-    },
-    {
-      "topicId": 546999474,
-      "title": "Now what?",
-      "description": "",
-      "pin": true
-    }
-  ]
+  "messages": []
 }

@@ -21,6 +21,7 @@ export const userPost = (token: string, topicId: number, message: string): Messa
 
   const messageId = getHashInteger(data.messages.length, 7);
   const sender = data.users.find(u => u.username === user.username).displayName;
+  const username = data.users.find(u => u.username === user.username).username;
   const timeSent = Math.floor(Date.now() / 1000);
 
   data.messages.push({
@@ -28,7 +29,8 @@ export const userPost = (token: string, topicId: number, message: string): Messa
     topicId,
     sender,
     timeSent,
-    message
+    message,
+    username
   });
 
   setData(data);

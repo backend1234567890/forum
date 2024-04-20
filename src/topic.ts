@@ -9,6 +9,7 @@ export interface TopicId {
 export interface MessageInfo {
     me: boolean;
     sender: string;
+    username: string;
     messageId: number;
     message: string;
     timeSent: number;
@@ -63,7 +64,6 @@ export const userTopicCreate = (token: string, title: string, description: strin
 export const userTopicInfo = (token: string, topicId: number): TopicInfo => {
   const data = getData();
   const user = loggedinId(token);
-  const name = data.users.find(u => u.username === user.username).displayName;
 
   const topic = data.topics.find(top => top.topicId === topicId);
   if (!topic) {
@@ -73,7 +73,7 @@ export const userTopicInfo = (token: string, topicId: number): TopicInfo => {
   const selectedMessages = data.messages.filter(mes => mes.topicId === topicId);
   const messages = selectedMessages.map(obj => {
     let bool: boolean;
-    if (obj.sender === name) {
+    if (obj.username === user.username) {
       bool = true;
     } else {
       bool = false;
@@ -92,7 +92,6 @@ export const userTopicInfo = (token: string, topicId: number): TopicInfo => {
 export const userTopicList = (token: string): TopicList => {
   const data = getData();
   const user = loggedinId(token);
-  const name = data.users.find(u => u.username === user.username).displayName;
 
   const topics = data.topics.filter(topic => topic.pin === false).map(topic => {
     if (data.messages.filter(mes => mes.topicId === topic.topicId).length === 0) {
@@ -110,7 +109,7 @@ export const userTopicList = (token: string): TopicList => {
     
     const { sender, message } = selectedMessage;
     let me: boolean;
-    if (selectedMessage.sender === name) {
+    if (selectedMessage.username === user.username) {
       me = true;
     } else {
       me = false;
@@ -142,7 +141,7 @@ export const userTopicList = (token: string): TopicList => {
 
     const { sender, message } = selectedMessage;
     let me: boolean;
-    if (selectedMessage.sender === name) {
+    if (selectedMessage.username === user.username) {
       me = true;
     } else {
       me = false;

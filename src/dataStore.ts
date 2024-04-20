@@ -49,6 +49,7 @@ export interface Topics {
 export interface Messages {
     messageId: number;
     topicId: number;
+    username: string;
     sender: string;
     timeSent: number;
     message: string;

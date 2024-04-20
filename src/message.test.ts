@@ -15,6 +15,7 @@ beforeEach(() => {
 describe('1. userPost()', () => {
   let token1: string;
   let token2: string;
+  let token3: string;
   let topicId1: number;
 
   beforeEach(() => {
@@ -30,6 +31,13 @@ describe('1. userPost()', () => {
       displayName: 'Shadow',
       password: 'IMissU123',
       repeatPassword: 'IMissU123'
+    }).token;
+
+    token3 = userAuthRegister({
+      username: 'shadow',
+      displayName: 'Faiz Arradhin',
+      password: 'KuCintaKau4Ever',
+      repeatPassword: 'KuCintaKau4Ever'
     }).token;
 
     topicId1 = userTopicCreate(token1, {
@@ -56,11 +64,13 @@ describe('1. userPost()', () => {
     const message3 = userPost(token1, topicId1, { message: 'This is my second message.' });
     const message4 = userPost(token1, topicId1, { message: 'This is my third message.' });
     const message5 = userPost(token2, topicId1, { message: 'This is his second message.' });
+    const message6 = userPost(token3, topicId1, { message: 'This is his first second message.' });
     expect(message1).toStrictEqual({ messageId: expect.any(Number) });
     expect(message2).toStrictEqual({ messageId: expect.any(Number) });
     expect(message3).toStrictEqual({ messageId: expect.any(Number) });
     expect(message4).toStrictEqual({ messageId: expect.any(Number) });
     expect(message5).toStrictEqual({ messageId: expect.any(Number) });
+    expect(message6).toStrictEqual({ messageId: expect.any(Number) });
 
     expect(userTopicInfo(token1, topicId1)).toStrictEqual({
       topicId: topicId1,
@@ -70,6 +80,7 @@ describe('1. userPost()', () => {
         {
           me: true,
           sender: 'Faiz Arradhin',
+          username: 'faizarradhin',
           messageId: message1.messageId,
           message: 'This is my first message.',
           timeSent: expect.any(Number)
@@ -77,6 +88,7 @@ describe('1. userPost()', () => {
         {
           me: false,
           sender: 'Shadow',
+          username: 'shadowfaiz',
           messageId: message2.messageId,
           message: 'This is his first message.',
           timeSent: expect.any(Number)
@@ -84,6 +96,7 @@ describe('1. userPost()', () => {
         {
           me: true,
           sender: 'Faiz Arradhin',
+          username: 'faizarradhin',
           messageId: message3.messageId,
           message: 'This is my second message.',
           timeSent: expect.any(Number)
@@ -91,6 +104,7 @@ describe('1. userPost()', () => {
         {
           me: true,
           sender: 'Faiz Arradhin',
+          username: 'faizarradhin',
           messageId: message4.messageId,
           message: 'This is my third message.',
           timeSent: expect.any(Number)
@@ -98,8 +112,17 @@ describe('1. userPost()', () => {
         {
           me: false,
           sender: 'Shadow',
+          username: 'shadowfaiz',
           messageId: message5.messageId,
           message: 'This is his second message.',
+          timeSent: expect.any(Number)
+        },
+        {
+          me: false,
+          sender: 'Faiz Arradhin',
+          username: 'shadow',
+          messageId: message6.messageId,
+          message: 'This is his first second message.',
           timeSent: expect.any(Number)
         }
       ]
@@ -113,6 +136,7 @@ describe('1. userPost()', () => {
         {
           me: false,
           sender: 'Faiz Arradhin',
+          username: 'faizarradhin',
           messageId: message1.messageId,
           message: 'This is my first message.',
           timeSent: expect.any(Number)
@@ -120,6 +144,7 @@ describe('1. userPost()', () => {
         {
           me: true,
           sender: 'Shadow',
+          username: 'shadowfaiz',
           messageId: message2.messageId,
           message: 'This is his first message.',
           timeSent: expect.any(Number)
@@ -127,6 +152,7 @@ describe('1. userPost()', () => {
         {
           me: false,
           sender: 'Faiz Arradhin',
+          username: 'faizarradhin',
           messageId: message3.messageId,
           message: 'This is my second message.',
           timeSent: expect.any(Number)
@@ -134,6 +160,7 @@ describe('1. userPost()', () => {
         {
           me: false,
           sender: 'Faiz Arradhin',
+          username: 'faizarradhin',
           messageId: message4.messageId,
           message: 'This is my third message.',
           timeSent: expect.any(Number)
@@ -141,8 +168,73 @@ describe('1. userPost()', () => {
         {
           me: true,
           sender: 'Shadow',
+          username: 'shadowfaiz',
           messageId: message5.messageId,
           message: 'This is his second message.',
+          timeSent: expect.any(Number)
+        },
+        {
+          me: false,
+          sender: 'Faiz Arradhin',
+          username: 'shadow',
+          messageId: message6.messageId,
+          message: 'This is his first second message.',
+          timeSent: expect.any(Number)
+        }
+      ]
+    });
+
+    expect(userTopicInfo(token3, topicId1)).toStrictEqual({
+      topicId: topicId1,
+      title: 'How to do something?',
+      description: 'Do not know what to explain',
+      messages: [
+        {
+          me: false,
+          sender: 'Faiz Arradhin',
+          username: 'faizarradhin',
+          messageId: message1.messageId,
+          message: 'This is my first message.',
+          timeSent: expect.any(Number)
+        },
+        {
+          me: false,
+          sender: 'Shadow',
+          username: 'shadowfaiz',
+          messageId: message2.messageId,
+          message: 'This is his first message.',
+          timeSent: expect.any(Number)
+        },
+        {
+          me: false,
+          sender: 'Faiz Arradhin',
+          username: 'faizarradhin',
+          messageId: message3.messageId,
+          message: 'This is my second message.',
+          timeSent: expect.any(Number)
+        },
+        {
+          me: false,
+          sender: 'Faiz Arradhin',
+          username: 'faizarradhin',
+          messageId: message4.messageId,
+          message: 'This is my third message.',
+          timeSent: expect.any(Number)
+        },
+        {
+          me: false,
+          sender: 'Shadow',
+          username: 'shadowfaiz',
+          messageId: message5.messageId,
+          message: 'This is his second message.',
+          timeSent: expect.any(Number)
+        },
+        {
+          me: true,
+          sender: 'Faiz Arradhin',
+          username: 'shadow',
+          messageId: message6.messageId,
+          message: 'This is his first second message.',
           timeSent: expect.any(Number)
         }
       ]
