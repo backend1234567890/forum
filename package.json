@@ -9,9 +9,10 @@
         "ts-node-dev": "ts-node-dev",
         "tsc": "tsc --noEmit",
         "lint": "eslint '**/*.ts'",
-        "lint-fix": "eslint --fix '**/*.ts'",
+        "lint-fix": "eslint --fix **/*.ts",
         "start": "ts-node src/server.ts",
-        "start-dev": "ts-node-dev src/server.ts"
+        "start-dev": "ts-node-dev src/server.ts",
+        "ts-node-coverage": "nyc --reporter=text --reporter=lcov ts-node -T src/server.ts"
     },
     "keywords": [],
     "author": "",
@@ -28,12 +29,13 @@
         "eslint": "^8.56.0",
         "eslint-plugin-jest": "^27.6.3",
         "jest": "^29.7.0",
+        "swagger-ui-express": "^4.6.2",
         "sync-request-curl": "^3.0.0",
         "ts-jest": "^29.1.2",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.3.3",
         "yaml": "^2.2.2",
-        "swagger-ui-express": "^4.6.2"
+        "nyc": "^15.1.0"
     },
     "dependencies": {
         "cors": "^2.8.5",
@@ -41,5 +43,11 @@
         "middleware-http-errors": "^0.1.2",
         "morgan": "^1.10.0",
         "ts-node": "^10.9.2"
+    },
+    "nyc": {
+        "exclude": [
+            "echo.*"
+        ]
     }
+
 }

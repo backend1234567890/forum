@@ -1,26 +1,6 @@
 {
-  "users": [
-    {
-      "username": "faizarradhin",
-      "displayName": "Faiz Arradhin",
-      "password": "3da7b29a3834f84d634356d916bfa6880b231a4069282d3c626e149714c0d6cc"
-    },
-    {
-      "username": "faizarradhinnew",
-      "displayName": "Faiz Arradhin",
-      "password": "3da7b29a3834f84d634356d916bfa6880b231a4069282d3c626e149714c0d6cc"
-    }
-  ],
-  "tokens": [
-    {
-      "username": "faizarradhin",
-      "token": 126238075
-    },
-    {
-      "username": "faizarradhinnew",
-      "token": 78703525
-    }
-  ],
+  "users": [],
+  "tokens": [],
   "topics": [],
   "messages": []
 }
