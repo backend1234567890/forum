@@ -323,8 +323,34 @@ paths:
             Return error if any of the following conditions met:
             - Title is less than 5 characters
             - Title is more than 50 characters
+            - TopicId is not valid
           schema:
             $ref: '#/components/return/Error'
+    delete:
+      summary: delete topic and its message
+      description: Maybe we add trash later
+      parameters:
+        - $ref: '#/components/header/Token'
+        - $ref: '#/components/path/TopicId'
+      tags:
+        - "Main"
+      responses:
+        200: 
+          description: OK
+          schema:
+            $ref: '#/components/return/Empty'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+        400:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid topicId
+          schema:
+            $ref: '$/components/return/Error'
   /user/topic/list:
     get:
       summary: Collections of topics briefly
@@ -364,6 +390,12 @@ paths:
             - Invalid token
           schema:
             $ref: '#/components/return/Error'
+        400:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid topicId
+          schema:
+            $ref: '#/components/return/Error'
   /user/topic/{topicid}/post:
     post:
       summary: Send a message to forum
@@ -388,13 +420,14 @@ paths:
         400:
           description: |
             Return error if any of the following conditions met:
+            - Invalid topicId
             - Message is empty
           schema:
             $ref: '#/components/return/Error'
   /user/topic/{topicid}/message/{messageid}:
     put:
       summary: Edit message body
-      decription: Edit message... Time sent is updated
+      description: Edit message... Time sent is updated
       parameters:
         - $ref: '#/components/header/Token'
         - $ref: '#/components/path/TopicId'
@@ -410,6 +443,8 @@ paths:
         400:
           description: |
             Return error if any of the following conditions met:
+            - TopicId is not valid
+            - MessageId is not in this topic
             - Message is empty
           schema:
             $ref: '#/components/return/Error'
@@ -419,6 +454,40 @@ paths:
             - Invalid token
           schema:
             $ref: '#/components/return/Error'
+        403:
+          description: |
+            Return error if any of the following conditions met:
+            - message is not sent by the correct sender
+          schema:
+            $ref: '#/components/return/Error'
+    delete:
+      summary: delete message
+      description: Maybe we add trash later
+      parameters:
+        - $ref: '#/components/header/Token'
+        - $ref: '#/components/path/TopicId'
+        - $ref: '#/components/path/MessageId'
+      tags:
+        - "Main"
+      responses:
+        200: 
+          description: OK
+          schema:
+            $ref: '#/components/return/Empty'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+        400:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid topicId
+            - Invalid MessageId
+            - Message is not in the right topic
+          schema:
+            $ref: '$/components/return/Error'
         403:
           description: |
             Return error if any of the following conditions met:
