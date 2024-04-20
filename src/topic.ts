@@ -195,3 +195,7 @@ export const userTopicPin = (token: string, topicId: number): EmptyObject => {
     setData(data);
     return {};
 }
+
+export const userTopicUpdate = (token: string, topicId: number, title: string, description: string): EmptyObject => {
+    return {}
+}

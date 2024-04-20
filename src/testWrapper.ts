@@ -156,3 +156,17 @@ export const userTopicPin = (token: string, topicId: number) => {
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
 }
+
+export const userTopicUpdate = (token: string, topicId: number, message: Topic) => {
+  const res = request(
+    'PUT',
+    SERVER_URL + '/user/topic/' + topicId,
+    {
+      headers: { token },
+      json: message
+    }
+  );
+
+  throwingError(res.statusCode, res.body.toString());
+  return JSON.parse(res.body.toString());
+}

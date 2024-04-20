@@ -20,7 +20,8 @@ import {
   userTopicInfo,
   userTopicList,
   userTopicDelete,
-  userTopicPin
+  userTopicPin,
+  userTopicUpdate
 } from './topic';
 
 const PORT: number = parseInt(process.env.PORT || config.port);
@@ -107,6 +108,15 @@ app.put('/user/topic/:topicid/pin', (req: Request, res: Response) => {
   const token = req.headers.token as string;
   const topicId =  req.params.topicid as string;
   const response = userTopicPin(token, JSON.parse(topicId));
+
+  res.json(response);
+});
+
+app.put('/user/topic/:topicid', (req: Request, res: Response) => {
+  const token = req.headers.token as string;
+  const topicId =  req.params.topicid as string;
+  const { title, description } = req.body
+  const response = userTopicUpdate(token, JSON.parse(topicId), title, description);
 
   res.json(response);
 });

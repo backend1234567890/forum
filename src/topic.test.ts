@@ -5,7 +5,8 @@ import {
     userTopicList,
     userTopicDelete,
     userTopicPin,
-    clear
+    clear,
+    userTopicUpdate
 } from './testWrapper';
 
 import HTTPError from 'http-errors';
@@ -31,7 +32,7 @@ describe('1. userTopicCreate()', () => {
             title: 'How to do something?',
             description: 'Do not know what to explain'
         })).toThrow(HTTPError[401]);
-    })
+    });
 
     test('b. Error: Inappropriate length of title', () => {
         expect(() => userTopicCreate(token, {
@@ -43,7 +44,7 @@ describe('1. userTopicCreate()', () => {
             title: 'dot'.repeat(17),
             description: 'Do not know what to explain'
         })).toThrow(HTTPError[400]);
-    })
+    });
 
     test('c. Success creating topic', () => {
         const topicId = userTopicCreate(token, {
@@ -336,4 +337,64 @@ describe('5. userTopicPin()', () => {
             ]
         })
     })
+});
+
+describe('6. userTopicUpdate()', () => {
+    let token: string;
+    let topicId: number;
+
+    beforeEach(() => {
+        token = userAuthRegister({
+            username: 'faizarradhin',
+            displayName: 'Faiz Arradhin',
+            password: 'KuCintaKau4Ever',
+            repeatPassword: 'KuCintaKau4Ever'
+        }).token;
+
+        topicId = userTopicCreate(token, {
+            title: 'How to do something?',
+            description: 'Do not know what to explain'
+        }).topicId;
+    });
+   
+    test('a. Error: Invalid token', () => {
+        expect(() => userTopicUpdate(JSON.stringify(JSON.parse(token) + 1), topicId, {
+            title: 'New Title',
+            description: 'New Description'
+        })).toThrow(HTTPError[401]);
+    });
+
+    test('b. Error: Invalid topicId', () => {
+        expect(() => userTopicUpdate(token, topicId + 1, {
+            title: 'New Title',
+            description: 'New Description'
+        })).toThrow(HTTPError[400]);
+    });
+
+    test('c. Error: Inappropriate length of title', () => {
+        expect(() => userTopicCreate(token, {
+            title: 'new',
+            description: ''
+        })).toThrow(HTTPError[400]);
+
+        expect(() => userTopicCreate(token, {
+            title: 'new'.repeat(17),
+            description: 'hahahhaa'
+        })).toThrow(HTTPError[400]);
+    });
+
+    test('d. Success', () => {
+        expect(userTopicUpdate(token, topicId, {
+            title: 'New Title',
+            description: 'New Description'
+        })).toStrictEqual({});
+
+        expect(userTopicInfo(token, topicId)).toStrictEqual({
+            topicId: topicId,
+            title: "New Title",
+            description: "New Description",
+            messages: []
+        });
+    })
+
 });
