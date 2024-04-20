@@ -358,6 +358,25 @@ paths:
       parameters:
         - $ref: '#/components/header/Token'
         - $ref: '#/components/path/TopicId'
+      tags:
+        - "Chat"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/components/return/Empty'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+        400:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid tokenId
+          schema:
+            $ref: '#/components/return/Error'
   /user/topic/list:
     get:
       summary: Collections of topics briefly
