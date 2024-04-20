@@ -130,5 +130,16 @@ export const userTopicList = (token: string): TopicList => {
 }
 
 export const userTopicDelete = (token: string, topicId: number): EmptyObject => {
+    const data = getData();
+    loggedinId(token);
+
+    const topic = data.topics.find(top => top.topicId === topicId);
+    if (!topic) {
+        throw HTTPError(400, "Topic Id is not valid");
+    }
+
+    data.topics = data.topics.filter(top => top.topicId !== topicId);
+    data.messages = data.messages.filter(mes => mes.topicId !== topicId);
+    setData(data);
     return {};
 }
