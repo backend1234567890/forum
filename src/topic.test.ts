@@ -77,7 +77,7 @@ describe('2. userTopicInfo()', () => {
 
 
     test('a. Error: Invalid token', () => {
-        expect(() => userTopicInfo(token + 1, topicId)).toThrow(HTTPError[401]);
+        expect(() => userTopicInfo(JSON.stringify(JSON.parse(token) + 1), topicId)).toThrow(HTTPError[401]);
     })
 
     test('b. Error: Invalid topicId', () => {

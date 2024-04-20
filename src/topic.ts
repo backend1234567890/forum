@@ -45,10 +45,29 @@ export const userTopicCreate = (token: string, title: string, description: strin
 }
 
 export const userTopicInfo = (token: string, topicId: number): TopicInfo => {
+    const data = getData();
+    const user = loggedinId(token);
+
+    const topic = data.topics.find(top => top.topicId === topicId);
+    if (!topic) {
+        throw HTTPError(400, "Invalid topicId");
+    }
+
+    const selectedMessages = data.messages.filter(mes => mes.topicId === topicId);
+    const messages = selectedMessages.map(obj => {
+        let bool: boolean;
+        if (obj.sender === user.username) {
+            bool = true;
+        } else {
+            bool = false;
+        }
+        return { ...obj, me: bool};
+    });
+
     return {
-        topicId: 1234567,
-        title: "Topic Title",
-        description: "Description doesn't need to be ver long",
-        messages:[]
+        topicId,
+        title: topic.title,
+        description: topic.description,
+        messages
     }
 }

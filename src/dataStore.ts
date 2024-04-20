@@ -49,8 +49,9 @@ export interface Topics {
 export interface Messages {
     messageId: number;
     topicId: number;
-    sender: number;
+    sender: string;
     timeSent: number;
+    message: string;
 }
 
 export interface DataStore {
