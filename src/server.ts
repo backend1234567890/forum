@@ -14,7 +14,8 @@ import {
   userAuthRegister,
   userAuthLogin,
   userAuthLogout,
-  userAuthProfile
+  userAuthProfile,
+  userAuthEdit
 } from './auth';
 import {
   userTopicCreate,
@@ -154,6 +155,14 @@ app.delete('/user/topic/:topicid/message/:messageid', (req: Request, res: Respon
 app.get('/user/auth/profile', (req: Request, res: Response) => {
   const token = req.headers.token as string;
   const response = userAuthProfile(token);
+
+  res.json(response);
+});
+
+app.put('/user/auth/profile', (req: Request, res: Response) => {
+  const token = req.headers.token as string;
+  const { displayName } = req.body;
+  const response = userAuthEdit(token, displayName);
 
   res.json(response);
 });

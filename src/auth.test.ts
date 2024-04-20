@@ -3,7 +3,8 @@ import {
   userAuthLogin,
   userAuthLogout,
   clear,
-  userAuthProfile
+  userAuthProfile,
+  userAuthEdit
 } from './testWrapper';
 
 import HTTPError from 'http-errors';
@@ -138,8 +139,37 @@ describe('4. userAuthProfile()', () => {
 
   test('b. Success', () => {
     expect(userAuthProfile(token)).toStrictEqual({
-      username: "faizarradhin",
-      displayName: "Faiz Arradhin"
+      username: 'faizarradhin',
+      displayName: 'Faiz Arradhin'
+    });
+  });
+});
+
+describe('5. userAuthEdit()', () => {
+  let token: string;
+
+  beforeEach(() => {
+    token = userAuthRegister({
+      username: 'faizarradhin',
+      displayName: 'Faiz Arradhin',
+      password: 'KuCintaKau4Ever',
+      repeatPassword: 'KuCintaKau4Ever'
+    }).token;
+  });
+
+  test('a. Error: Invalid token', () => {
+    expect(() => userAuthEdit(JSON.stringify(JSON.parse(token) + 1), { displayName: 'New Name' })).toThrow(HTTPError[401]);
+  });
+
+  test('b. Error: Name is empty', () => {
+    expect(() => userAuthEdit(token, { displayName: '' })).toThrow(HTTPError[400]);
+  });
+
+  test('c. Success', () => {
+    userAuthEdit(token, { displayName: 'New Name' });
+    expect(userAuthProfile(token)).toStrictEqual({
+      username: 'faizarradhin',
+      displayName: 'New Name'
     });
   });
 });

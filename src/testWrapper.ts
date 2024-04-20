@@ -45,6 +45,10 @@ interface Posting {
   message: string;
 }
 
+interface DisplayName {
+  displayName: string;
+}
+
 export const clear = () => {
   const res = request(
     'DELETE',
@@ -222,6 +226,20 @@ export const userAuthProfile = (token: string) => {
     SERVER_URL + '/user/auth/profile',
     {
       headers: { token }
+    }
+  );
+
+  throwingError(res.statusCode, res.body.toString());
+  return JSON.parse(res.body.toString());
+};
+
+export const userAuthEdit = (token: string, message: DisplayName) => {
+  const res = request(
+    'PUT',
+    SERVER_URL + '/user/auth/profile',
+    {
+      headers: { token },
+      json: message
     }
   );
 

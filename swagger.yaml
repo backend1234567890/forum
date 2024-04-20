@@ -324,6 +324,12 @@ paths:
             Return error if any of the following conditions met:
             - Invalid token
           schema:
+            $ref: '#/components/return/Error' 
+        400:
+          description: |
+            Return error if any of the following conditions met:
+            - Name is empty
+          schema:
             $ref: '#/components/return/Error'        
   /user/topic/create:
     post:

@@ -89,4 +89,4 @@ export const userPostDelete = (token: string, topicId: number, messageId: number
 
   setData(data);
   return {};
-}
+};

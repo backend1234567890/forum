@@ -127,5 +127,20 @@ export const userAuthProfile = (token: string): Profile => {
   return {
     displayName,
     username
+  };
+};
+
+export const userAuthEdit = (token: string, displayName: string): EmptyObject => {
+  const data = getData();
+  loggedinId(token);
+
+  if (displayName === '') {
+    throw HTTPError(400, 'displayName cannot be empty');
   }
-}
+
+  const selectedUser = data.users.find(u => u.username);
+  selectedUser.displayName = displayName;
+
+  setData(data);
+  return {};
+};
