@@ -1,6 +1,105 @@
 {
-  "users": [],
-  "tokens": [],
-  "topics": [],
-  "messages": []
+  "users": [
+    {
+      "username": "faizarradhin",
+      "displayName": "Faiz Arradhin",
+      "password": "3da7b29a3834f84d634356d916bfa6880b231a4069282d3c626e149714c0d6cc"
+    },
+    {
+      "username": "shadowfaiz",
+      "displayName": "Shadow",
+      "password": "bed9743910ec09f590e226d57eda9a0df9c8c6fe222c32f12ca57813a9e8de2f"
+    },
+    {
+      "username": "shadow",
+      "displayName": "Faiz Arradhin",
+      "password": "3da7b29a3834f84d634356d916bfa6880b231a4069282d3c626e149714c0d6cc"
+    }
+  ],
+  "tokens": [
+    {
+      "username": "faizarradhin",
+      "token": 435731232
+    },
+    {
+      "username": "shadowfaiz",
+      "token": 459105336
+    },
+    {
+      "username": "shadow",
+      "token": 623160117
+    }
+  ],
+  "topics": [
+    {
+      "topicId": 435731232,
+      "title": "How to do something?",
+      "description": "Do not know what to explain",
+      "pin": false
+    },
+    {
+      "topicId": 781088788,
+      "title": "How to do something else?",
+      "description": "Do not know what to explain",
+      "pin": false
+    }
+  ],
+  "messages": [
+    {
+      "messageId": 435731232,
+      "topicId": 435731232,
+      "sender": "Faiz Arradhin",
+      "timeSent": 1713613135,
+      "message": "New message",
+      "username": "faizarradhin"
+    },
+    {
+      "messageId": 239598587,
+      "topicId": 435731232,
+      "sender": "Shadow",
+      "timeSent": 1713613135,
+      "message": "This is his first message.",
+      "username": "shadowfaiz"
+    },
+    {
+      "messageId": 428068527,
+      "topicId": 435731232,
+      "sender": "Faiz Arradhin",
+      "timeSent": 1713613135,
+      "message": "This is my second message.",
+      "username": "faizarradhin"
+    },
+    {
+      "messageId": 568291838,
+      "topicId": 435731232,
+      "sender": "Faiz Arradhin",
+      "timeSent": 1713613135,
+      "message": "This is my third message.",
+      "username": "faizarradhin"
+    },
+    {
+      "messageId": 218829016,
+      "topicId": 435731232,
+      "sender": "Shadow",
+      "timeSent": 1713613135,
+      "message": "This is his second message.",
+      "username": "shadowfaiz"
+    },
+    {
+      "messageId": 184619780,
+      "topicId": 435731232,
+      "sender": "Faiz Arradhin",
+      "timeSent": 1713613135,
+      "message": "This is his first second message.",
+      "username": "shadow"
+    },
+    {
+      "messageId": 127408924,
+      "topicId": 781088788,
+      "sender": "Faiz Arradhin",
+      "timeSent": 1713613135,
+      "message": "This is his first first second message.",
+      "username": "shadow"
+    }
+  ]
 }

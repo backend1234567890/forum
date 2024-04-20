@@ -255,6 +255,7 @@ describe('2. userPostUpdate()', () => {
   let message4: number;
   let message5: number;
   let message6: number;
+  let message7: number;
 
   beforeEach(() => {
     token1 = userAuthRegister({
@@ -294,7 +295,7 @@ describe('2. userPostUpdate()', () => {
     message4 = userPost(token1, topicId1, { message: 'This is my third message.' }).messageId;
     message5 = userPost(token2, topicId1, { message: 'This is his second message.' }).messageId;
     message6 = userPost(token3, topicId1, { message: 'This is his first second message.' }).messageId;
-    message6 = userPost(token3, topicId2, { message: 'This is his first second message.' }).messageId;
+    message7 = userPost(token3, topicId2, { message: 'This is his first first second message.' }).messageId;
   });
 
   test('a. Error: Invalid token', () => {
@@ -318,7 +319,7 @@ describe('2. userPostUpdate()', () => {
   })
 
   test('f. Success', () => {
-    userPostUpdate(token2, topicId1, message1, { message: 'New message' });
+    userPostUpdate(token1, topicId1, message1, { message: 'New message' });
     expect(userTopicInfo(token1, topicId1)).toStrictEqual({
       topicId: topicId1,
       title: 'How to do something?',

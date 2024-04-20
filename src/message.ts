@@ -40,5 +40,29 @@ export const userPost = (token: string, topicId: number, message: string): Messa
 };
 
 export const userPostUpdate = (token: string, topicId: number, messageId: number, message: string): EmptyObject => {
+  const data = getData();
+  const user = loggedinId(token);
+
+  const chosenMessage = data.messages.find(mes => mes.messageId === messageId);
+  if (chosenMessage.username !== user.username) {
+    throw HTTPError(403, 'Message not owned by this user');
+  }
+  
+  if (chosenMessage.topicId !== topicId) {
+    throw HTTPError(400, "Message is not in this topic");
+  }
+
+  const topic = data.topics.find(top => top.topicId === topicId);
+  if (!topic) {
+    throw HTTPError(400, 'Invalid topicId');
+  }
+
+  if (message === '') {
+    throw HTTPError(400, 'Messasge cannot be empty');
+  }
+
+  chosenMessage.message = message;
+
+  setData(data);
   return {};
 }
