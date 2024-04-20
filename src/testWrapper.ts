@@ -38,7 +38,11 @@ interface Login {
 
 interface Topic {
   title: string;
-  description: string
+  description: string;
+}
+
+interface Posting {
+  message: string;
 }
 
 export const clear = () => {
@@ -161,6 +165,20 @@ export const userTopicUpdate = (token: string, topicId: number, message: Topic) 
   const res = request(
     'PUT',
     SERVER_URL + '/user/topic/' + topicId,
+    {
+      headers: { token },
+      json: message
+    }
+  );
+
+  throwingError(res.statusCode, res.body.toString());
+  return JSON.parse(res.body.toString());
+}
+
+export const userPost = (token: string, topicId: number, message: Posting) => {
+  const res = request(
+    'POST',
+    SERVER_URL + '/user/topic/' + topicId + '/post',
     {
       headers: { token },
       json: message

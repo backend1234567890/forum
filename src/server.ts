@@ -23,6 +23,7 @@ import {
   userTopicPin,
   userTopicUpdate
 } from './topic';
+import { userPost } from './message';
 
 const PORT: number = parseInt(process.env.PORT || config.port);
 const HOST: string = process.env.IP || '127.0.0.1';
@@ -117,6 +118,15 @@ app.put('/user/topic/:topicid', (req: Request, res: Response) => {
   const topicId =  req.params.topicid as string;
   const { title, description } = req.body
   const response = userTopicUpdate(token, JSON.parse(topicId), title, description);
+
+  res.json(response);
+});
+
+app.post('/user/topic/:topicid/post', (req: Request, res: Response) => {
+  const token = req.headers.token as string;
+  const topicId =  req.params.topicid as string;
+  const { message } = req.body
+  const response = userPost(token, JSON.parse(topicId), message);
 
   res.json(response);
 });
