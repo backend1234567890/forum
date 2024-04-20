@@ -89,17 +89,42 @@ export const userTopicInfo = (token: string, topicId: number): TopicInfo => {
 }
 
 export const userTopicList = (token: string): TopicList => {
-    return {
-        topics: [
-          {
-            topicId: 1234567,
-            title: "Topic Title",
-            lastMessage: {
-              me: true,
-              sender: "Faiz Arradhin",
-              message: "This is an example of a message"
+    const data = getData();
+    const user = loggedinId(token);
+
+    const topics = data.topics.map(topic => {
+        if (data.messages.filter(mes => mes.topicId === topic.topicId)) {
+            return {
+                topicId: topic.topicId,
+                title: topic.title,
+                lastMessage: {
+                    me: true,
+                    sender: '',
+                    message: ''
+                }
             }
-          }
-        ]
+        }
+        const selectedMessage = (data.messages.sort((a, b) => b.timeSent - a.timeSent))[0];
+
+        const { sender, message } = selectedMessage;
+        let me: boolean;
+        if (selectedMessage.sender === user.username) {
+            me = true;
+        } else {
+            me = false;
+        }
+        return {
+            topicId: topic.topicId,
+            title: topic.title,
+            lastMessage: {
+                me,
+                sender,
+                message
+            }
+        }
+    }).reverse();
+
+    return {
+        topics
     }
 }
