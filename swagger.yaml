@@ -223,13 +223,13 @@ paths:
         400:
           description: |
             Return error if any of the following conditions met:
-            - Username has space
-            - Username contains capital letter
+            - Username contains non-alphanumeric characters
             - Username has already been used by other user
             - Less than 8 characters
             - Password does not contain at least 1 lowercase
             - Password does not contain at least 1 uppercase
             - Password does not contain at least 1 number
+            - Repeat password is not same to the password
           schema:
             $ref: '#/components/return/Error'
   /user/auth/login:

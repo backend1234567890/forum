@@ -24,6 +24,13 @@ const throwingError = (statusCode: number, message: string | Buffer) => {
     }
 };
 
+interface Register {
+  username: string;
+  displayName: string;
+  password: string;
+  repeatPassword: string;
+}
+
 export const clear = () => {
     const res = request(
       'DELETE',
@@ -33,6 +40,17 @@ export const clear = () => {
       }
     );
     return JSON.parse(res.body.toString());
+};
+
+export const userAuthRegister = (message: Register) => {
+  const res = request(
+    'POST',
+    SERVER_URL + '/user/auth/register',
+    {
+      json: message
+    }
+  );
+  return JSON.parse(res.body.toString());
 };
 
 
