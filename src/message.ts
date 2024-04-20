@@ -1,4 +1,4 @@
-import { getData, setData, getHash, getHashInteger, EmptyObject } from './dataStore';
+import { getData, setData, getHashInteger, EmptyObject } from './dataStore';
 import { loggedinId } from './auth';
 import HTTPError from 'http-errors';
 
@@ -7,32 +7,32 @@ export interface Message{
 }
 
 export const userPost = (token: string, topicId: number, message: string): Message => {
-    const data = getData();
-    const user = loggedinId(token);
-    
-    const topic = data.topics.find(top => top.topicId === topicId);
-    if (!topic) {
-        throw HTTPError(400, "Invalid topicId");
-    }    
+  const data = getData();
+  const user = loggedinId(token);
 
-    if (message === "") {
-        throw HTTPError(400, "Messasge cannot be empty");
-    }
+  const topic = data.topics.find(top => top.topicId === topicId);
+  if (!topic) {
+    throw HTTPError(400, 'Invalid topicId');
+  }
 
-    const messageId = getHashInteger(data.messages.length, 7);
-    const sender = data.users.find(u => u.username === user.username).displayName;
-    const timeSent = Math.floor(Date.now() / 1000);
+  if (message === '') {
+    throw HTTPError(400, 'Messasge cannot be empty');
+  }
 
-    data.messages.push({
-        messageId,
-        topicId,
-        sender,
-        timeSent,
-        message
-    })
+  const messageId = getHashInteger(data.messages.length, 7);
+  const sender = data.users.find(u => u.username === user.username).displayName;
+  const timeSent = Math.floor(Date.now() / 1000);
 
-    setData(data);
-    return {
-        messageId
-    }
-}
+  data.messages.push({
+    messageId,
+    topicId,
+    sender,
+    timeSent,
+    message
+  });
+
+  setData(data);
+  return {
+    messageId
+  };
+};

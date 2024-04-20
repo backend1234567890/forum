@@ -107,7 +107,7 @@ export const userTopicCreate = (token: string, message: Topic) => {
 
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
-}
+};
 
 export const userTopicInfo = (token: string, topicId: number) => {
   const res = request(
@@ -120,7 +120,7 @@ export const userTopicInfo = (token: string, topicId: number) => {
 
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
-}
+};
 
 export const userTopicList = (token: string) => {
   const res = request(
@@ -133,7 +133,7 @@ export const userTopicList = (token: string) => {
 
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
-}
+};
 
 export const userTopicDelete = (token: string, topicId: number) => {
   const res = request(
@@ -146,7 +146,7 @@ export const userTopicDelete = (token: string, topicId: number) => {
 
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
-}
+};
 
 export const userTopicPin = (token: string, topicId: number) => {
   const res = request(
@@ -159,7 +159,7 @@ export const userTopicPin = (token: string, topicId: number) => {
 
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
-}
+};
 
 export const userTopicUpdate = (token: string, topicId: number, message: Topic) => {
   const res = request(
@@ -173,7 +173,7 @@ export const userTopicUpdate = (token: string, topicId: number, message: Topic) 
 
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
-}
+};
 
 export const userPost = (token: string, topicId: number, message: Posting) => {
   const res = request(
@@ -187,4 +187,4 @@ export const userPost = (token: string, topicId: number, message: Posting) => {
 
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
-}
+};

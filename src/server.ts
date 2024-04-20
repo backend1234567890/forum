@@ -76,7 +76,7 @@ app.post('/user/auth/logout', (req: Request, res: Response) => {
 
 app.post('/user/topic/create', (req: Request, res: Response) => {
   const token = req.headers.token as string;
-  const { title, description } = req.body
+  const { title, description } = req.body;
   const response = userTopicCreate(token, title, description);
 
   res.json(response);
@@ -84,7 +84,7 @@ app.post('/user/topic/create', (req: Request, res: Response) => {
 
 app.get('/user/topic/:topicid/info', (req: Request, res: Response) => {
   const token = req.headers.token as string;
-  const topicId =  req.params.topicid as string;
+  const topicId = req.params.topicid as string;
   const response = userTopicInfo(token, JSON.parse(topicId));
 
   res.json(response);
@@ -99,7 +99,7 @@ app.get('/user/topic/list', (req: Request, res: Response) => {
 
 app.delete('/user/topic/:topicid', (req: Request, res: Response) => {
   const token = req.headers.token as string;
-  const topicId =  req.params.topicid as string;
+  const topicId = req.params.topicid as string;
   const response = userTopicDelete(token, JSON.parse(topicId));
 
   res.json(response);
@@ -107,7 +107,7 @@ app.delete('/user/topic/:topicid', (req: Request, res: Response) => {
 
 app.put('/user/topic/:topicid/pin', (req: Request, res: Response) => {
   const token = req.headers.token as string;
-  const topicId =  req.params.topicid as string;
+  const topicId = req.params.topicid as string;
   const response = userTopicPin(token, JSON.parse(topicId));
 
   res.json(response);
@@ -115,8 +115,8 @@ app.put('/user/topic/:topicid/pin', (req: Request, res: Response) => {
 
 app.put('/user/topic/:topicid', (req: Request, res: Response) => {
   const token = req.headers.token as string;
-  const topicId =  req.params.topicid as string;
-  const { title, description } = req.body
+  const topicId = req.params.topicid as string;
+  const { title, description } = req.body;
   const response = userTopicUpdate(token, JSON.parse(topicId), title, description);
 
   res.json(response);
@@ -124,8 +124,8 @@ app.put('/user/topic/:topicid', (req: Request, res: Response) => {
 
 app.post('/user/topic/:topicid/post', (req: Request, res: Response) => {
   const token = req.headers.token as string;
-  const topicId =  req.params.topicid as string;
-  const { message } = req.body
+  const topicId = req.params.topicid as string;
+  const { message } = req.body;
   const response = userPost(token, JSON.parse(topicId), message);
 
   res.json(response);
