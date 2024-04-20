@@ -197,5 +197,21 @@ export const userTopicPin = (token: string, topicId: number): EmptyObject => {
 }
 
 export const userTopicUpdate = (token: string, topicId: number, title: string, description: string): EmptyObject => {
+    const data = getData();
+    loggedinId(token);
+
+    const topic = data.topics.find(top => top.topicId === topicId);
+    if (!topic) {
+        throw HTTPError(400, "Topic Id is not valid");
+    }
+
+    if (title.length < 5 || title.length > 50) {
+        throw HTTPError(400, "Title must be between 5 and 50 long");
+    }   
+
+    topic.title = title;
+    topic.description = description;
+
+    setData(data);
     return {}
 }

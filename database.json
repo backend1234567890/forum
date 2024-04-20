@@ -1,43 +1,7 @@
 {
-  "users": [
-    {
-      "username": "faizarradhin",
-      "displayName": "Faiz Arradhin",
-      "password": "3da7b29a3834f84d634356d916bfa6880b231a4069282d3c626e149714c0d6cc"
-    }
-  ],
-  "tokens": [
-    {
-      "username": "faizarradhin",
-      "token": 784981628
-    }
-  ],
-  "topics": [
-    {
-      "topicId": 784981628,
-      "title": "How to do something?",
-      "description": "Do not know what to explain",
-      "pin": false
-    },
-    {
-      "topicId": 206357054,
-      "title": "Who am I?",
-      "description": "No one knows",
-      "pin": true
-    },
-    {
-      "topicId": 706329313,
-      "title": "Now what?",
-      "description": "",
-      "pin": false
-    },
-    {
-      "topicId": 506675369,
-      "title": "Again?",
-      "description": "",
-      "pin": false
-    }
-  ],
+  "users": [],
+  "tokens": [],
+  "topics": [],
   "messages": [],
   "pinnedTopics": [
     {
