@@ -2,7 +2,8 @@ import {
   userAuthRegister,
   userAuthLogin,
   userAuthLogout,
-  clear
+  clear,
+  userAuthProfile
 } from './testWrapper';
 
 import HTTPError from 'http-errors';
@@ -116,5 +117,29 @@ describe('3. userAuthLogout()', () => {
       username: 'faizarradhin',
       password: 'KuCintaKau4Ever'
     })).not.toThrow(HTTPError[400]);
+  });
+});
+
+describe('4. userAuthProfile()', () => {
+  let token: string;
+
+  beforeEach(() => {
+    token = userAuthRegister({
+      username: 'faizarradhin',
+      displayName: 'Faiz Arradhin',
+      password: 'KuCintaKau4Ever',
+      repeatPassword: 'KuCintaKau4Ever'
+    }).token;
+  });
+
+  test('a. Error: Invalid token', () => {
+    expect(() => userAuthProfile(JSON.stringify(JSON.parse(token) + 1))).toThrow(HTTPError[401]);
+  });
+
+  test('b. Success', () => {
+    expect(userAuthProfile(token)).toStrictEqual({
+      username: "faizarradhin",
+      displayName: "Faiz Arradhin"
+    });
   });
 });

@@ -13,7 +13,8 @@ import { clear } from './other';
 import {
   userAuthRegister,
   userAuthLogin,
-  userAuthLogout
+  userAuthLogout,
+  userAuthProfile
 } from './auth';
 import {
   userTopicCreate,
@@ -146,6 +147,13 @@ app.delete('/user/topic/:topicid/message/:messageid', (req: Request, res: Respon
   const topicId = req.params.topicid as string;
   const messageId = req.params.messageid as string;
   const response = userPostDelete(token, JSON.parse(topicId), JSON.parse(messageId));
+
+  res.json(response);
+});
+
+app.get('/user/auth/profile', (req: Request, res: Response) => {
+  const token = req.headers.token as string;
+  const response = userAuthProfile(token);
 
   res.json(response);
 });

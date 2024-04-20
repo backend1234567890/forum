@@ -9,6 +9,11 @@ export interface Username {
     username: string
 }
 
+export interface Profile {
+  username: string;
+  displayName: string;
+}
+
 export const loggedinId = (token: string): Username => {
   const data = getData();
 
@@ -112,3 +117,15 @@ export const userAuthLogout = (token: string): EmptyObject => {
   setData(data);
   return {};
 };
+
+export const userAuthProfile = (token: string): Profile => {
+  const data = getData();
+  const user = loggedinId(token);
+  const username = user.username;
+  const displayName = data.users.find(u => u.username === username).displayName;
+
+  return {
+    displayName,
+    username
+  }
+}

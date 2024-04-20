@@ -215,3 +215,16 @@ export const userPostDelete = (token: string, topicId: number, messageId: number
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
 };
+
+export const userAuthProfile = (token: string) => {
+  const res = request(
+    'GET',
+    SERVER_URL + '/user/auth/profile',
+    {
+      headers: { token }
+    }
+  );
+
+  throwingError(res.statusCode, res.body.toString());
+  return JSON.parse(res.body.toString());
+};
