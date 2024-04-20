@@ -72,35 +72,35 @@ describe('1. userPost()', () => {
           sender: "Faiz Arradhin",
           messageId: message1.messageId,
           message: "This is my first message.",
-          timeSent: 1683019484
+          timeSent: expect.any(Number)
         },
         {
           me: false,
           sender: "Shadow",
           messageId: message2.messageId,
           message: "This is his first message.",
-          timeSent: 1683019484
+          timeSent: expect.any(Number)
         },
         {
           me: true,
           sender: "Faiz Arradhin",
           messageId: message3.messageId,
           message: "This is my second message.",
-          timeSent: 1683019484
+          timeSent: expect.any(Number)
         },
         {
           me: true,
           sender: "Faiz Arradhin",
           messageId: message4.messageId,
           message: "This is my third message.",
-          timeSent: 1683019484
+          timeSent: expect.any(Number)
         },
         {
           me: false,
           sender: "Shadow",
           messageId: message5.messageId,
           message: "This is his second message.",
-          timeSent: 1683019484
+          timeSent: expect.any(Number)
         }
       ]
     });
@@ -115,35 +115,35 @@ describe('1. userPost()', () => {
           sender: "Faiz Arradhin",
           messageId: message1.messageId,
           message: "This is my first message.",
-          timeSent: 1683019484
+          timeSent: expect.any(Number)
         },
         {
           me: true,
           sender: "Shadow",
           messageId: message2.messageId,
           message: "This is his first message.",
-          timeSent: 1683019484
+          timeSent: expect.any(Number)
         },
         {
           me: false,
           sender: "Faiz Arradhin",
           messageId: message3.messageId,
           message: "This is my second message.",
-          timeSent: 1683019484
+          timeSent: expect.any(Number)
         },
         {
           me: false,
           sender: "Faiz Arradhin",
           messageId: message4.messageId,
           message: "This is my third message.",
-          timeSent: 1683019484
+          timeSent: expect.any(Number)
         },
         {
           me: true,
           sender: "Shadow",
           messageId: message5.messageId,
           message: "This is his second message.",
-          timeSent: 1683019484
+          timeSent: expect.any(Number)
         }
       ]
     });

@@ -81,11 +81,11 @@ describe('2. userTopicInfo()', () => {
 
     test('a. Error: Invalid token', () => {
         expect(() => userTopicInfo(JSON.stringify(JSON.parse(token) + 1), topicId)).toThrow(HTTPError[401]);
-    })
+    });
 
     test('b. Error: Invalid topicId', () => {
         expect(() => userTopicInfo(token, topicId + 1)).toThrow(HTTPError[400]);
-    })
+    });
 
     test('c. Success', () => {
         expect(userTopicInfo(token, topicId)).toStrictEqual({
@@ -94,9 +94,8 @@ describe('2. userTopicInfo()', () => {
             description: "Do not know what to explain",
             messages: []
         });
-    })
+    });
 
-    test.todo('d. check with message');
 });
 
 describe('3. userTopicList()', () => {
