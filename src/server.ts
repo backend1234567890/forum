@@ -28,6 +28,7 @@ import {
 import { userPost, userPostDelete, userPostUpdate } from './message';
 
 import { createClient } from '@vercel/kv';
+import { DEPLOYED_URL } from './dataStore';
 
 // Replace this with your API_URL
 // E.g. https://large-poodle-44208.kv.vercel-storage.com
@@ -43,7 +44,7 @@ const database = createClient({
 
 
 const PORT: number = parseInt(process.env.PORT || config.port);
-const HOST: string = process.env.IP || '127.0.0.1';
+const HOST: string = DEPLOYED_URL;
 
 const app = express();
 
@@ -65,13 +66,13 @@ app.use('/docs', sui.serve, sui.setup(YAML.parse(file), { swaggerOptions: { docE
 // ========================================================================= //
 
 app.get('/data', async (req: Request, res: Response) => {
-  const data = await database.hgetall("data");
+  const data = await database.hgetall("data:name");
   res.status(200).json(data);
 });
 
 app.put('/data', async (req: Request, res: Response) => {
   const { data } = req.body;
-  await database.hset("data", { data });
+  await database.hset("data:name", { data });
   return res.status(200).json({});
 });
 
