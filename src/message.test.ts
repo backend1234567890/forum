@@ -319,7 +319,7 @@ describe('2. userPostUpdate()', () => {
   });
 
   test('f. Error: Invalid messageId', () => {
-    expect(() => userPostUpdate(token1, topicId1, message1 + 10, { message: 'New message' })).toThrow(HTTPError[400]);
+    expect(() => userPostUpdate(token1, topicId1, message1 + 10, { message: 'New message' })).toThrow(HTTPError[403]);
   });
 
   test('g. Success', () => {
@@ -565,7 +565,7 @@ describe('3. userPostDelete()', () => {
   });
 
   test('e. Error: Invalid messageId', () => {
-    expect(() => userPostDelete(token1, topicId1, message1 + 10)).toThrow(HTTPError[400]);
+    expect(() => userPostDelete(token1, topicId1, message1 + 10)).toThrow(HTTPError[403]);
   });
 
   test('f. Success', () => {
