@@ -351,6 +351,13 @@ paths:
             - Invalid topicId
           schema:
             $ref: '$/components/return/Error'
+  /user/topic/{topicid}/pin:
+    put:
+      summary: Pin/unpin important topic
+      description: Put the topic at the top of the list
+      parameters:
+        - $ref: '#/components/header/Token'
+        - $ref: '#/components/path/TopicId'
   /user/topic/list:
     get:
       summary: Collections of topics briefly
