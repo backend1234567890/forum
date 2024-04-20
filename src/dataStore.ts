@@ -62,6 +62,43 @@ export interface DataStore {
     messages: Messages[];
 }
 
+
+import request, { HttpVerb } from 'sync-request';
+// Open submission.ts and update DEPLOYED_URL
+const DEPLOYED_URL = "https://forum-taupe-three.vercel.app/";
+
+const requestHelper = (method: HttpVerb, path: string, payload: object) => {
+  let json = {};
+  let qs = {};
+  if (['POST', 'DELETE'].includes(method)) {
+    qs = payload;
+  } else {
+    json = payload;
+  }
+
+  const res = request(method, DEPLOYED_URL + path, { qs, json, timeout: 20000 });
+  return JSON.parse(res.body.toString());
+};
+
+const getData = (): DataStore => {
+  try {
+    const res = requestHelper('GET', '/data', {});
+    return res.data;
+  } catch (e) {
+    return {
+      users: [],
+      tokens: [],
+      topics: [],
+      messages: []
+    };
+  }
+};
+
+export const setData = (newData: DataStore) => {
+  requestHelper('PUT', '/data', { data: newData });
+};
+
+
 let data: DataStore = {
   users: [],
   tokens: [],
@@ -73,16 +110,16 @@ const save = () => {
   fs.writeFileSync('./database.json', JSON.stringify(data, null, 2));
 };
 
-export const getData = (): DataStore => {
-  if (fs.existsSync('./database.json')) {
-    const json = fs.readFileSync('./database.json', { encoding: 'utf8' });
-    data = JSON.parse(json);
-  }
-  return data;
-};
+// export const getData = (): DataStore => {
+//   if (fs.existsSync('./database.json')) {
+//     const json = fs.readFileSync('./database.json', { encoding: 'utf8' });
+//     data = JSON.parse(json);
+//   }
+//   return data;
+// };
 
-// Use set(newData) to pass in the entire data object, with modifications made
-export const setData = (newData: DataStore): void => {
-  data = newData;
-  save();
-};
+// // Use set(newData) to pass in the entire data object, with modifications made
+// export const setData = (newData: DataStore): void => {
+//   data = newData;
+//   save();
+// };
