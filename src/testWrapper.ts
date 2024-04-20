@@ -1,10 +1,11 @@
 import request from 'sync-request-curl';
 import config from './config.json';
 import HTTPError from 'http-errors';
+import { DEPLOYED_URL } from './dataStore';
 
 const port = config.port;
 const url = config.url;
-const SERVER_URL = `${url}:${port}`;
+const SERVER_URL = DEPLOYED_URL;
 
 const throwingError = (statusCode: number, message: string | Buffer) => {
   const errorMessage = JSON.parse(message.toString());
