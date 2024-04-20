@@ -65,7 +65,7 @@ export interface DataStore {
 
 import request, { HttpVerb } from 'sync-request';
 // Open submission.ts and update DEPLOYED_URL
-const DEPLOYED_URL = "https://forum-taupe-three.vercel.app/";
+const DEPLOYED_URL = "https://forum-2jwuf44zh-server-forms-projects.vercel.app/";
 
 const requestHelper = (method: HttpVerb, path: string, payload: object) => {
   let json = {};
