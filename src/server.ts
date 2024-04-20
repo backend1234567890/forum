@@ -9,6 +9,8 @@ import fs from 'fs';
 import path from 'path';
 import process from 'process';
 
+import { clear } from './other';
+
 const PORT: number = parseInt(process.env.PORT || config.port);
 const HOST: string = process.env.IP || '127.0.0.1';
 
@@ -32,7 +34,12 @@ app.use('/docs', sui.serve, sui.setup(YAML.parse(file), { swaggerOptions: { docE
 // YOUR ROUTES SHOULD BE DEFINED BELOW THIS DIVIDER
 // ========================================================================= //
 
-
+app.delete('/clear', (req: Request, res: Response) => {
+    const response = clear();
+  
+    res.json(response);
+  });
+  
 
 // ========================================================================= //
 // YOUR ROUTES SHOULD BE DEFINED ABOVE THIS DIVIDER

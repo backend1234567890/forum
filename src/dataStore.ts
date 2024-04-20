@@ -1,4 +1,5 @@
 import fs from 'fs';
+export type EmptyObject = Record<never, never>;
 
 export interface Users {
     username: string;

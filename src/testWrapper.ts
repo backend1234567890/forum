@@ -1,0 +1,38 @@
+import request from 'sync-request-curl';
+import config from './config.json';
+import HTTPError from 'http-errors';
+
+const port = config.port;
+const url = config.url;
+const SERVER_URL = `${url}:${port}`;
+
+const throwingError = (statusCode: number, message: string | Buffer) => {
+    const errorMessage = JSON.parse(message.toString());
+    switch (statusCode) {
+      case 400:
+      case 401:
+      case 403:
+        throw HTTPError(statusCode, errorMessage);
+      case 404: // NOT_FOUND
+        throw HTTPError(statusCode, 'Cannot find. Hint: Check that your server.ts have the correct path AND method');
+      case 500: // INTERNAL_SERVER_ERROR
+        throw HTTPError(statusCode, errorMessage + '\n\nHint: Your server crashed. Check the server log!\n');
+      default:
+        if (statusCode !== 200) {
+          throw HTTPError(statusCode, errorMessage + `\n\nSorry, no idea! Look up the status code ${statusCode} online!\n`);
+        }
+    }
+};
+
+export const clear = () => {
+    const res = request(
+      'DELETE',
+      SERVER_URL + '/clear',
+      {
+        qs: { }
+      }
+    );
+    return JSON.parse(res.body.toString());
+};
+
+
