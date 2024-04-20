@@ -353,7 +353,7 @@ paths:
             Return error if any of the following conditions met:
             - Invalid topicId
           schema:
-            $ref: '$/components/return/Error'
+            $ref: '#/components/return/Error'
   /user/topic/{topicid}/pin:
     put:
       summary: Pin/unpin important topic

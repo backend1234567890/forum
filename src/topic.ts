@@ -126,5 +126,9 @@ export const userTopicList = (token: string): TopicList => {
 
     return {
         topics
-    }
+    };
+}
+
+export const userTopicDelete = (token: string, topicId: number): EmptyObject => {
+    return {};
 }

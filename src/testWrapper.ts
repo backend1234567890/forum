@@ -130,3 +130,16 @@ export const userTopicList = (token: string) => {
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
 }
+
+export const userTopicDelete = (token: string, topicId: number) => {
+  const res = request(
+    'DELETE',
+    SERVER_URL + '/user/topic/' + topicId,
+    {
+      headers: { token }
+    }
+  );
+
+  throwingError(res.statusCode, res.body.toString());
+  return JSON.parse(res.body.toString());
+}

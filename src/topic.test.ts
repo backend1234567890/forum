@@ -3,6 +3,7 @@ import {
     userTopicCreate,
     userTopicInfo,
     userTopicList,
+    userTopicDelete,
     clear
 } from './testWrapper';
 
@@ -167,4 +168,73 @@ describe('3. userTopicList()', () => {
     })
 
     test.todo('c. Check with message');
+});
+
+describe('4. userTopicDelete()', () => {
+    let token: string;
+    let topicId1: number;
+    let topicId2: number;
+    let topicId3: number;
+
+    beforeEach(() => {
+        token = userAuthRegister({
+            username: 'faizarradhin',
+            displayName: 'Faiz Arradhin',
+            password: 'KuCintaKau4Ever',
+            repeatPassword: 'KuCintaKau4Ever'
+        }).token;
+
+        topicId1 = userTopicCreate(token, {
+            title: 'How to do something?',
+            description: 'Do not know what to explain'
+        }).topicId;
+
+        
+        topicId2 = userTopicCreate(token, {
+            title: 'Who am I?',
+            description: 'No one knows'
+        }).topicId;
+
+        
+        topicId3 = userTopicCreate(token, {
+            title: 'Now what?',
+            description: ''
+        }).topicId;
+    });
+
+    test('a. Error: Invalid token', () => {
+        expect(() => userTopicDelete(JSON.stringify(JSON.parse(token) + 1), topicId1)).toThrow(HTTPError[401]);
+    });
+
+    test('b. Error: Invalid topicId', () => {
+        expect(() => userTopicDelete(token, topicId1 + 3)).toThrow(HTTPError[400]);
+    });
+
+    test('c. Success', () => {
+        expect(userTopicDelete(token, topicId2)).toStrictEqual({});
+        expect(userTopicList(token)).toStrictEqual({
+            topics: [
+                {
+                    topicId: topicId3,
+                    title: "Now what?",
+                    lastMessage: {
+                      me: true,
+                      sender: "",
+                      message: ""
+                    }
+                },
+                {
+                    topicId: topicId1,
+                    title: "How to do something?",
+                    lastMessage: {
+                      me: true,
+                      sender: "",
+                      message: ""
+                    }
+                }
+            ]
+        })
+    })
+
+    test.todo('d. Check with message');
 });
