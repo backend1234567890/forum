@@ -210,7 +210,7 @@ paths:
   /user/auth/register:
     post:
       summary: Register new user.
-      description: Creating a new userId and token. Username will be lowercased
+      description: Creating a new userId and token, Username will be lowercased
       parameters:
         - $ref: '#/components/body/register'
       tags:
@@ -226,7 +226,7 @@ paths:
             - Any of username, displayName, password, or repeatPassword is empty
             - Username contains non-alphanumeric characters
             - Username has already been used by other user
-            - Less than 8 characters
+            - Password is less than 8 characters
             - Password does not contain at least 1 lowercase
             - Password does not contain at least 1 uppercase
             - Password does not contain at least 1 number

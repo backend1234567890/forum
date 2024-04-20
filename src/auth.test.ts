@@ -1,5 +1,6 @@
 import {
     userAuthRegister,
+    userAuthLogin,
     clear
 } from './testWrapper';
 
@@ -35,4 +36,18 @@ describe('1. userAuthRegister()', () => {
     test.skip('i. Success registering', () => {
         //waiting for login function
     });
-})
+});
+
+describe('2. userAuthLogin()', () => {
+    beforeEach(() => {
+
+    });
+    
+    test('a. Error: Wrong username or password', () => {
+
+    });
+
+    test('b. Success login', () => {
+
+    })
+});

@@ -31,6 +31,11 @@ interface Register {
   repeatPassword: string;
 }
 
+interface Login {
+  username: string;
+  password: string;
+}
+
 export const clear = () => {
     const res = request(
       'DELETE',
@@ -46,6 +51,19 @@ export const userAuthRegister = (message: Register) => {
   const res = request(
     'POST',
     SERVER_URL + '/user/auth/register',
+    {
+      json: message
+    }
+  );
+
+  throwingError(res.statusCode, res.body.toString());
+  return JSON.parse(res.body.toString());
+};
+
+export const userAuthLogin = (message: Login) => {
+  const res = request(
+    'POST',
+    SERVER_URL + '/user/auth/login',
     {
       json: message
     }

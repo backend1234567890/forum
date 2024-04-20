@@ -10,7 +10,10 @@ import path from 'path';
 import process from 'process';
 
 import { clear } from './other';
-import { userAuthRegister } from './auth';
+import { 
+  userAuthRegister,
+  userAuthLogin 
+} from './auth';
 
 const PORT: number = parseInt(process.env.PORT || config.port);
 const HOST: string = process.env.IP || '127.0.0.1';
@@ -44,6 +47,13 @@ app.delete('/clear', (req: Request, res: Response) => {
 app.post('/user/auth/register', (req: Request, res: Response) => {
   const { username, displayName, password, repeatPassword } = req.body;
   const response = userAuthRegister(username, displayName, password, repeatPassword);
+
+  res.json(response);
+});
+
+app.put('/user/auth/login', (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  const response = userAuthLogin(username, password);
 
   res.json(response);
 });

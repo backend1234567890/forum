@@ -62,3 +62,9 @@ export const userAuthRegister = (username: string, displayName: string, password
         token: JSON.stringify(token)
     }
 }
+
+export const userAuthLogin = (username: string, password: string): Token => {
+    return {
+        token: 'token'
+    }
+}
