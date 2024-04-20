@@ -29,7 +29,6 @@ export const getHashInteger = (integerValue: number, multipliers: number, range 
 };
 
 export interface Users {
-    userId: number;
     username: string;
     displayName: string;
     password: string;
@@ -37,7 +36,7 @@ export interface Users {
 
 export interface Tokens {
     token: number;
-    userId: number;
+    username: string;
 }
 
 export interface Topics {

@@ -32,7 +32,6 @@ export const userAuthRegister = (username: string, displayName: string, password
         throw HTTPError(400, "Password must contain at least 1 number, 1 lowercase, and 1 uppercase");
     }
 
-    username = username.toLowerCase();
     password = getHash(password);
     const userId = getHashInteger(data.users.length, 2);
 
@@ -46,14 +45,13 @@ export const userAuthRegister = (username: string, displayName: string, password
     const token = getHashInteger(newToken, 4);
 
     data.users.push({
-        userId,
         username,
         displayName,
         password
     })
 
     data.tokens.push({
-        userId,
+        username,
         token
     })
 
@@ -64,7 +62,31 @@ export const userAuthRegister = (username: string, displayName: string, password
 }
 
 export const userAuthLogin = (username: string, password: string): Token => {
+    const data = getData();
+
+    const user = data.users.find(u => u.username === username && u.password === getHash(password));
+    if (!user) {
+        throw HTTPError(400, "incorrect username or password");
+    }
+
+    if (data.tokens.some(t => t.username === username)) {
+        throw HTTPError(400, "Already logged in");
+    }
+
+    let newToken = -1;
+    if (data.tokens.length === 0) {
+      newToken = 0;
+    } else {
+      newToken = data.tokens[data.tokens.length - 1].token + 1;
+    }
+
+    const token = getHashInteger(newToken, 4);
+    data.tokens.push({
+        username,
+        token
+    })
+
     return {
-        token: 'token'
+        token: JSON.stringify(token)
     }
 }
