@@ -1,9 +1,15 @@
 import express, { json, Request, Response } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import { port, url } from './config.json';
+import config from './config.json';
+import errorHandler from 'middleware-http-errors';
+import YAML from 'yaml';
+import sui from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
+import process from 'process';
 
-const PORT: number = parseInt(process.env.PORT || port);
+const PORT: number = parseInt(process.env.PORT || config.port);
 const HOST: string = process.env.IP || '127.0.0.1';
 
 const app = express();
@@ -15,11 +21,12 @@ app.use(json());
 // Use middleware to log (print to terminal) incoming HTTP requests (OPTIONAL)
 app.use(morgan('dev'));
 
-// Root URL
-app.get('/', (req: Request, res: Response) => {
-  console.log('Print to terminal: someone accessed our root url!');
-  res.status(200).json({ message: 'Hello darkness my old friend!' });
-});
+
+// for producing the docs that define the API
+const file = fs.readFileSync(path.join(process.cwd(), 'swagger.yaml'), 'utf8');
+app.get('/', (req: Request, res: Response) => res.redirect('/docs'));
+// istanbul ignore next
+app.use('/docs', sui.serve, sui.setup(YAML.parse(file), { swaggerOptions: { docExpansion: false ? 'full' : 'list' } }));
 
 // ========================================================================= //
 // YOUR ROUTES SHOULD BE DEFINED BELOW THIS DIVIDER
@@ -56,16 +63,16 @@ app.use((req: Request, res: Response) => {
    * Start server
    */
   const server = app.listen(PORT, HOST, () => {
-    console.log(`Express Server started and awaiting requests at the URL: '${url}:${PORT}'`);
+    console.log(`⚡️ Server started on port ${PORT} at ${HOST}`);
   });
   
+  
+  // For handling errors
+  app.use(errorHandler());
   /**
    * Handle Ctrl+C gracefully
    */
   process.on('SIGINT', () => {
-    server.close(() => {
-      console.log('Shutting down server gracefully.');
-      process.exit();
-    });
+    server.close(() => console.log('Shutting down server gracefully.'));
   });
   
