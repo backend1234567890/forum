@@ -65,7 +65,7 @@ let data: DataStore = {
   users: [],
   tokens: [],
   topics: [],
-  messages: []
+  messages: [],
 };
 
 const save = () => {

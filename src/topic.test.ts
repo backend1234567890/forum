@@ -240,7 +240,7 @@ describe('4. userTopicDelete()', () => {
     test.todo('d. Check with message');
 });
 
-describe('4. userTopicDelete()', () => {
+describe('5. userTopicPin()', () => {
     let token: string;
     let topicId1: number;
     let topicId2: number;
@@ -293,7 +293,7 @@ describe('4. userTopicDelete()', () => {
         expect(() => userTopicPin(token, topicId4)).toThrow(HTTPError[400]);
     });
 
-    test('c. Successful', () => {
+    test('d. Successful', () => {
         expect(userTopicPin(token, topicId2)).toStrictEqual({});
         expect(userTopicList(token)).toStrictEqual({
             topics: [

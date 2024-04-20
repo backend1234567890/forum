@@ -92,7 +92,39 @@ export const userTopicList = (token: string): TopicList => {
     const data = getData();
     const user = loggedinId(token);
 
-    const topics = data.topics.map(topic => {
+    const topics = data.topics.filter(topic => topic.pin === false).map(topic => {
+        if (data.messages.filter(mes => mes.topicId === topic.topicId)) {
+            return {
+                topicId: topic.topicId,
+                title: topic.title,
+                lastMessage: {
+                    me: true,
+                    sender: '',
+                    message: ''
+                }
+            }
+        }
+        const selectedMessage = (data.messages.sort((a, b) => b.timeSent - a.timeSent))[0];
+
+        const { sender, message } = selectedMessage;
+        let me: boolean;
+        if (selectedMessage.sender === user.username) {
+            me = true;
+        } else {
+            me = false;
+        }
+        return {
+            topicId: topic.topicId,
+            title: topic.title,
+            lastMessage: {
+                me,
+                sender,
+                message
+            }
+        }
+    }).reverse();
+
+    const pinnedTopics = data.topics.filter(topic => topic.pin === true).map(topic => {
         if (data.messages.filter(mes => mes.topicId === topic.topicId)) {
             return {
                 topicId: topic.topicId,
@@ -125,7 +157,7 @@ export const userTopicList = (token: string): TopicList => {
     }).reverse();
 
     return {
-        topics
+        topics: [...pinnedTopics, ...topics]
     };
 }
 
@@ -146,5 +178,20 @@ export const userTopicDelete = (token: string, topicId: number): EmptyObject => 
 }
 
 export const userTopicPin = (token: string, topicId: number): EmptyObject => {
+    const data = getData();
+    loggedinId(token);
+
+    const topic = data.topics.find(top => top.topicId === topicId);
+    if (!topic) {
+        throw HTTPError(400, "Topic Id is not valid");
+    }
+
+    if (data.topics.filter(top => top.pin === true).length === 3) {
+        throw HTTPError(400, "Can only pin 3 topics");
+    }
+
+    topic.pin = !topic.pin
+
+    setData(data);
     return {};
 }
