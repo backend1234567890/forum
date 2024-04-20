@@ -21,6 +21,22 @@ export interface TopicInfo {
     messages: MessageInfo[];
 }
 
+export interface BriefMessage {
+    me: boolean;
+    sender: string;
+    message: string;
+}
+
+export interface Topics {
+    topicId: number;
+    title: string;
+    lastMessage: BriefMessage;
+}
+
+export interface TopicList {
+    topics: Topics[];
+}
+
 export const userTopicCreate = (token: string, title: string, description: string): TopicId => {
     const data = getData();
     loggedinId(token).username;
@@ -69,5 +85,21 @@ export const userTopicInfo = (token: string, topicId: number): TopicInfo => {
         title: topic.title,
         description: topic.description,
         messages
+    }
+}
+
+export const userTopicList = (token: string): TopicList => {
+    return {
+        topics: [
+          {
+            topicId: 1234567,
+            title: "Topic Title",
+            lastMessage: {
+              me: true,
+              sender: "Faiz Arradhin",
+              message: "This is an example of a message"
+            }
+          }
+        ]
     }
 }

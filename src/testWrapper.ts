@@ -117,3 +117,16 @@ export const userTopicInfo = (token: string, topicId: number) => {
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
 }
+
+export const userTopicList = (token: string) => {
+  const res = request(
+    'GET',
+    SERVER_URL + '/user/topic/list',
+    {
+      headers: { token }
+    }
+  );
+
+  throwingError(res.statusCode, res.body.toString());
+  return JSON.parse(res.body.toString());
+}
