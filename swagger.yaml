@@ -225,6 +225,7 @@ paths:
             Return error if any of the following conditions met:
             - Any of username, displayName, password, or repeatPassword is empty
             - Username contains non-alphanumeric characters
+            - Username contains capital letter
             - Username has already been used by other user
             - Password is less than 8 characters
             - Password does not contain at least 1 lowercase
@@ -250,6 +251,7 @@ paths:
           description: |
             Return error if any of the following conditions met:
             - Wrong username or password
+            - Already loggedin
           schema:
             $ref: '#/components/return/Error'
   /user/auth/logout:

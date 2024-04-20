@@ -12,8 +12,8 @@ export const userAuthRegister = (username: string, displayName: string, password
         throw HTTPError(400, "Username and displayName cannot be empty");
     }
 
-    if (!/^[a-zA-Z0-9]+$/.test(username)) {
-        throw HTTPError(400, "Username can only contains alphanumeric characters");
+    if (!/^[a-z0-9]+$/.test(username)) {
+        throw HTTPError(400, "Username can only contains lowercase alphanumeric characters");
     };
 
     if (data.users.some(u => u.username === username)) {
