@@ -61,11 +61,12 @@ app.get('/', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../login.html'));
 });
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 app.get('/forum', (req: Request, res: Response) => {
   const token = req.headers.token;
-  res.sendFile(path.join(__dirname, '../forum.html'), {
-    token: token
-  });
+  res.render('forum', { token: token });
 });
 // ========================================================================= //
 // YOUR ROUTES SHOULD BE DEFINED BELOW THIS DIVIDER
