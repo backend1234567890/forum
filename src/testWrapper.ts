@@ -36,6 +36,11 @@ interface Login {
   password: string;
 }
 
+interface Topic {
+  title: string;
+  description: string
+}
+
 export const clear = () => {
   const res = request(
     'DELETE',
@@ -85,3 +90,17 @@ export const userAuthLogout = (token: string) => {
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
 };
+
+export const userTopicCreate = (token: string, message: Topic) => {
+  const res = request(
+    'POST',
+    SERVER_URL + '/user/topic/create',
+    {
+      headers: { token },
+      json: message
+    }
+  );
+
+  throwingError(res.statusCode, res.body.toString());
+  return JSON.parse(res.body.toString());
+}

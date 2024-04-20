@@ -15,6 +15,9 @@ import {
   userAuthLogin,
   userAuthLogout
 } from './auth';
+import {
+  userTopicCreate
+} from './topic';
 
 const PORT: number = parseInt(process.env.PORT || config.port);
 const HOST: string = process.env.IP || '127.0.0.1';
@@ -61,6 +64,14 @@ app.post('/user/auth/login', (req: Request, res: Response) => {
 app.post('/user/auth/logout', (req: Request, res: Response) => {
   const token = req.headers.token as string;
   const response = userAuthLogout(token);
+
+  res.json(response);
+});
+
+app.post('/user/topic/create', (req: Request, res: Response) => {
+  const token = req.headers.token as string;
+  const { title, description } = req.body
+  const response = userTopicCreate(token, title, description);
 
   res.json(response);
 });
