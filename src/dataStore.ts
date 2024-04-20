@@ -80,7 +80,7 @@ const requestHelper = (method: HttpVerb, path: string, payload: object) => {
   return JSON.parse(res.body.toString());
 };
 
-const getData = (): DataStore => {
+export const getData = (): DataStore => {
   try {
     const res = requestHelper('GET', '/data', {});
     return res.data;
