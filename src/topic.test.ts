@@ -42,18 +42,24 @@ describe('1. userTopicCreate()', () => {
         })).toThrow(HTTPError[400]);
     })
 
-    test.skip('c. Success creating topic', () => {
+    test('c. Success creating topic', () => {
         const topicId = userTopicCreate(token, {
             title: 'How to do something?',
             description: 'Do not know what to explain'
         }).topicId;
 
-        //waiting topicInfo
+        expect(userTopicInfo(token, topicId)).toStrictEqual({
+            topicId: topicId,
+            title: "How to do something?",
+            description: "Do not know what to explain",
+            messages: []
+        });
     })
 });
 
-describe('1. userTopicCreate()', () => {
+describe('2. userTopicInfo()', () => {
     let token: string;
+    let topicId: number;
 
     beforeEach(() => {
         token = userAuthRegister({
@@ -62,18 +68,30 @@ describe('1. userTopicCreate()', () => {
             password: 'KuCintaKau4Ever',
             repeatPassword: 'KuCintaKau4Ever'
         }).token;
+
+        topicId = userTopicCreate(token, {
+            title: 'How to do something?',
+            description: 'Do not know what to explain'
+        }).topicId;
     });
 
 
     test('a. Error: Invalid token', () => {
-
+        expect(() => userTopicInfo(token + 1, topicId)).toThrow(HTTPError[401]);
     })
 
     test('b. Error: Invalid topicId', () => {
-        
+        expect(() => userTopicInfo(token, topicId + 1)).toThrow(HTTPError[400]);
     })
 
     test('c. Success', () => {
-        
+        expect(userTopicInfo(token, topicId)).toStrictEqual({
+            topicId: topicId,
+            title: "How to do something?",
+            description: "Do not know what to explain",
+            messages: []
+        });
     })
+
+    test.todo('d. check with message');
 });
