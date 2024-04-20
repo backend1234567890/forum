@@ -55,12 +55,10 @@ app.use(json());
 // Use middleware to log (print to terminal) incoming HTTP requests (OPTIONAL)
 app.use(morgan('dev'));
 
-// for producing the docs that define the API
-const file = fs.readFileSync(path.join(process.cwd(), 'swagger.yaml'), 'utf8');
-app.get('/', (req: Request, res: Response) => res.redirect('/docs'));
-// istanbul ignore next
-app.use('/docs', sui.serve, sui.setup(YAML.parse(file), { swaggerOptions: { docExpansion: config.expandDocs ? 'full' : 'list' } }));
-
+app.get('/', (req: Request, res: Response) => {
+  //res.json({message: "Someone is accessing our URL 👀"});
+  res.sendFile(path.join(__dirname, '../login.html'));
+});
 // ========================================================================= //
 // YOUR ROUTES SHOULD BE DEFINED BELOW THIS DIVIDER
 // ========================================================================= //
