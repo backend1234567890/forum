@@ -378,6 +378,7 @@ paths:
           description: |
             Return error if any of the following conditions met:
             - Invalid tokenId
+            - Already pinned 3 tokens
           schema:
             $ref: '#/components/return/Error'
   /user/topic/list:

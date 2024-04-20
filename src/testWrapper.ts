@@ -143,3 +143,16 @@ export const userTopicDelete = (token: string, topicId: number) => {
   throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
 }
+
+export const userTopicPin = (token: string, topicId: number) => {
+  const res = request(
+    'PUT',
+    SERVER_URL + '/user/topic/' + topicId + '/pin',
+    {
+      headers: { token }
+    }
+  );
+
+  throwingError(res.statusCode, res.body.toString());
+  return JSON.parse(res.body.toString());
+}

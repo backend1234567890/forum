@@ -140,6 +140,11 @@ export const userTopicDelete = (token: string, topicId: number): EmptyObject => 
 
     data.topics = data.topics.filter(top => top.topicId !== topicId);
     data.messages = data.messages.filter(mes => mes.topicId !== topicId);
+    
     setData(data);
+    return {};
+}
+
+export const userTopicPin = (token: string, topicId: number): EmptyObject => {
     return {};
 }

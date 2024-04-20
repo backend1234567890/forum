@@ -19,7 +19,8 @@ import {
   userTopicCreate,
   userTopicInfo,
   userTopicList,
-  userTopicDelete
+  userTopicDelete,
+  userTopicPin
 } from './topic';
 
 const PORT: number = parseInt(process.env.PORT || config.port);
@@ -98,6 +99,14 @@ app.delete('/user/topic/:topicid', (req: Request, res: Response) => {
   const token = req.headers.token as string;
   const topicId =  req.params.topicid as string;
   const response = userTopicDelete(token, JSON.parse(topicId));
+
+  res.json(response);
+});
+
+app.put('/user/topic/:topicid/pin', (req: Request, res: Response) => {
+  const token = req.headers.token as string;
+  const topicId =  req.params.topicid as string;
+  const response = userTopicPin(token, JSON.parse(topicId));
 
   res.json(response);
 });

@@ -4,6 +4,7 @@ import {
     userTopicInfo,
     userTopicList,
     userTopicDelete,
+    userTopicPin,
     clear
 } from './testWrapper';
 
@@ -237,4 +238,102 @@ describe('4. userTopicDelete()', () => {
     })
 
     test.todo('d. Check with message');
+});
+
+describe('4. userTopicDelete()', () => {
+    let token: string;
+    let topicId1: number;
+    let topicId2: number;
+    let topicId3: number;
+    let topicId4: number;
+
+    beforeEach(() => {
+        token = userAuthRegister({
+            username: 'faizarradhin',
+            displayName: 'Faiz Arradhin',
+            password: 'KuCintaKau4Ever',
+            repeatPassword: 'KuCintaKau4Ever'
+        }).token;
+
+        topicId1 = userTopicCreate(token, {
+            title: 'How to do something?',
+            description: 'Do not know what to explain'
+        }).topicId;
+
+        
+        topicId2 = userTopicCreate(token, {
+            title: 'Who am I?',
+            description: 'No one knows'
+        }).topicId;
+
+        
+        topicId3 = userTopicCreate(token, {
+            title: 'Now what?',
+            description: ''
+        }).topicId;
+
+        topicId4 = userTopicCreate(token, {
+            title: 'Again?',
+            description: ''
+        }).topicId;
+    });
+
+    test('a. Error: Invalid token', () => {
+        expect(() => userTopicPin(JSON.stringify(JSON.parse(token) + 1), topicId1)).toThrow(HTTPError[401]);
+    });
+
+    test('b. Error: Invalid topicId', () => {
+        expect(() => userTopicPin(token, topicId1 + 3)).toThrow(HTTPError[400]);
+    });
+
+    test('c. Error: Already pinned 3 topics', () => {
+        userTopicPin(token, topicId1)
+        userTopicPin(token, topicId2)
+        userTopicPin(token, topicId3)
+        expect(() => userTopicPin(token, topicId4)).toThrow(HTTPError[400]);
+    });
+
+    test('c. Successful', () => {
+        expect(userTopicPin(token, topicId2)).toStrictEqual({});
+        expect(userTopicList(token)).toStrictEqual({
+            topics: [
+                {
+                    topicId: topicId2,
+                    title: "Who am I?",
+                    lastMessage: {
+                      me: true,
+                      sender: "",
+                      message: ""
+                    }
+                },
+                {
+                    topicId: topicId4,
+                    title: "Again?",
+                    lastMessage: {
+                      me: true,
+                      sender: "",
+                      message: ""
+                    }
+                },
+                {
+                    topicId: topicId3,
+                    title: "Now what?",
+                    lastMessage: {
+                      me: true,
+                      sender: "",
+                      message: ""
+                    }
+                },
+                {
+                    topicId: topicId1,
+                    title: "How to do something?",
+                    lastMessage: {
+                      me: true,
+                      sender: "",
+                      message: ""
+                    }
+                }
+            ]
+        })
+    })
 });
