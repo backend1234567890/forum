@@ -388,13 +388,7 @@ function onSignup() {
     })
     .then(data => {
         console.log('Registration successful:', data);
-        fetch('/forum', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'token': data.token
-            }
-        })
+        window.location.href = '/forum';
     })
     .catch(error => {
         alert('Error: ' + error.message);
