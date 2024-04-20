@@ -388,7 +388,13 @@ function onSignup() {
     })
     .then(data => {
         console.log('Registration successful:', data);
-        // Display success message or redirect user
+        fetch('/forum', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': data.token
+            }
+        })
     })
     .catch(error => {
         alert('Error: ' + error.message);
