@@ -34,8 +34,18 @@ describe('1. userAuthRegister()', () => {
         expect(() => userAuthRegister({ username, displayName, password, repeatPassword })).toThrow(HTTPError[400]);
       });
 
-    test.skip('j. Success registering', () => {
-        //waiting for login function
+    test('j. Success registering', () => {
+        expect(userAuthRegister({
+            username: "faizarradhinnew",
+            displayName: 'Faiz Arradhin',
+            password: 'KuCintaKau4Ever',
+            repeatPassword: 'KuCintaKau4Ever'
+        })).toStrictEqual({token: expect.any(String)});
+        
+        expect(() => userAuthLogin({
+            username: 'faizarradhinnew',
+            password: 'KuCintaKau4Ever'
+        })).not.toThrow(HTTPError[400]);
     });
 });
 
@@ -78,6 +88,6 @@ describe.skip('2. userAuthLogin()', () => {
         expect(userAuthLogin({
             username: "faizarradhin",
             password: "KuCintaKau4Ever"
-        }).body).toStrictEqual({ token: expect.any(String) })
+        })).toStrictEqual({ token: expect.any(String) })
     })
 });
