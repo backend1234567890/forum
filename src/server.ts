@@ -61,8 +61,10 @@ app.get('/', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../login.html'));
 });
 
-app.set('view engine', 'ejs');
+// Set the views directory
 app.set('views', path.join(__dirname, 'views'));
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
 
 app.get('/forum', (req: Request, res: Response) => {
   const token = req.headers.token;
