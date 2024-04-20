@@ -106,7 +106,7 @@ export const userTopicList = (token: string): TopicList => {
       };
     }
     const selectedMessage = (data.messages.sort((a, b) => b.timeSent - a.timeSent))[0];
-    
+
     const { sender, message } = selectedMessage;
     let me: boolean;
     if (selectedMessage.username === user.username) {

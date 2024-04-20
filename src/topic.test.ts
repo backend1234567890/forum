@@ -13,12 +13,11 @@ import {
 import HTTPError from 'http-errors';
 
 function sleepSync(ms: number) {
-    const startTime = new Date().getTime();
-    while (new Date().getTime() - startTime < ms) {
-      // zzzZZ - comment needed so eslint doesn't complain
-    }
+  const startTime = new Date().getTime();
+  while (new Date().getTime() - startTime < ms) {
+    // zzzZZ - comment needed so eslint doesn't complain
+  }
 }
-  
 
 beforeEach(() => {
   clear();
@@ -123,18 +122,18 @@ describe('3. userTopicList()', () => {
     }).token;
 
     token2 = userAuthRegister({
-        username: 'shadowfaiz',
-        displayName: 'Shadow',
-        password: 'KuTakMauKehilanganmuKe2KaliNya',
-        repeatPassword: 'KuTakMauKehilanganmuKe2KaliNya'
+      username: 'shadowfaiz',
+      displayName: 'Shadow',
+      password: 'KuTakMauKehilanganmuKe2KaliNya',
+      repeatPassword: 'KuTakMauKehilanganmuKe2KaliNya'
     }).token;
 
     token3 = userAuthRegister({
-        username: 'shadowshadow',
-        displayName: 'Faiz Arradhin',
-        password: 'KuCintaKau4Ever',
-        repeatPassword: 'KuCintaKau4Ever'
-      }).token;
+      username: 'shadowshadow',
+      displayName: 'Faiz Arradhin',
+      password: 'KuCintaKau4Ever',
+      repeatPassword: 'KuCintaKau4Ever'
+    }).token;
 
     topicId1 = userTopicCreate(token, {
       title: 'How to do something?',
@@ -193,513 +192,513 @@ describe('3. userTopicList()', () => {
   test('c. Check with message', () => {
     userPost(token, topicId2, { message: 'This is my first message.' });
     expect(userTopicList(token)).toStrictEqual({
-        topics: [
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId2,
-            title: 'Who am I?',
-            lastMessage: {
-              me: true,
-              sender: 'Faiz Arradhin',
-              message: 'This is my first message.'
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
           }
-        ]
-      });
-      expect(userTopicList(token2)).toStrictEqual({
-        topics: [
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId2,
-            title: 'Who am I?',
-            lastMessage: {
-              me: false,
-              sender: 'Faiz Arradhin',
-              message: 'This is my first message.'
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+        },
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: true,
+            sender: 'Faiz Arradhin',
+            message: 'This is my first message.'
           }
-        ]
-    }); 
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
+    });
+    expect(userTopicList(token2)).toStrictEqual({
+      topics: [
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        },
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: false,
+            sender: 'Faiz Arradhin',
+            message: 'This is my first message.'
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
+    });
     sleepSync(1 * 1000);
     userPost(token2, topicId2, { message: 'This is his first message.' });
     expect(userTopicList(token)).toStrictEqual({
-        topics: [
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId2,
-            title: 'Who am I?',
-            lastMessage: {
-              me: false,
-              sender: 'Shadow',
-              message: 'This is his first message.'
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
           }
-        ]
+        },
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: false,
+            sender: 'Shadow',
+            message: 'This is his first message.'
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
     });
     expect(userTopicList(token2)).toStrictEqual({
-        topics: [
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId2,
-            title: 'Who am I?',
-            lastMessage: {
-              me: true,
-              sender: 'Shadow',
-              message: 'This is his first message.'
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
           }
-        ]
-    }); 
+        },
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: true,
+            sender: 'Shadow',
+            message: 'This is his first message.'
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
+    });
 
     expect(userTopicPin(token, topicId2)).toStrictEqual({});
     expect(userTopicList(token)).toStrictEqual({
-        topics: [
-          {
-              topicId: topicId2,
-              title: 'Who am I?',
-              lastMessage: {
-                me: false,
-                sender: 'Shadow',
-                message: 'This is his first message.'
-              }
-          },
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: false,
+            sender: 'Shadow',
+            message: 'This is his first message.'
           }
-        ]
+        },
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
     });
     expect(userTopicList(token2)).toStrictEqual({
-        topics: [
-          {
-              topicId: topicId2,
-              title: 'Who am I?',
-              lastMessage: {
-                me: true,
-                sender: 'Shadow',
-                message: 'This is his first message.'
-              }
-          },
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: true,
+            sender: 'Shadow',
+            message: 'This is his first message.'
           }
-        ]
-    }); 
+        },
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
+    });
 
     sleepSync(1 * 1000);
     userPost(token, topicId2, { message: 'This is my second message.' });
     expect(userTopicList(token)).toStrictEqual({
-        topics: [
-          {
-              topicId: topicId2,
-              title: 'Who am I?',
-              lastMessage: {
-                me: true,
-                sender: 'Faiz Arradhin',
-                message: 'This is my second message.'
-              }
-          },
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: true,
+            sender: 'Faiz Arradhin',
+            message: 'This is my second message.'
           }
-        ]
+        },
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
     });
     expect(userTopicList(token2)).toStrictEqual({
-        topics: [
-          {
-              topicId: topicId2,
-              title: 'Who am I?',
-              lastMessage: {
-                me: false,
-                sender: 'Faiz Arradhin',
-                message: 'This is my second message.'
-              }
-          },
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: false,
+            sender: 'Faiz Arradhin',
+            message: 'This is my second message.'
           }
-        ]
-    }); 
+        },
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
+    });
 
     expect(userTopicPin(token, topicId2)).toStrictEqual({});
     expect(userTopicList(token)).toStrictEqual({
-        topics: [
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-              topicId: topicId2,
-              title: 'Who am I?',
-              lastMessage: {
-                me: true,
-                sender: 'Faiz Arradhin',
-                message: 'This is my second message.'
-              }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
           }
-        ]
+        },
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: true,
+            sender: 'Faiz Arradhin',
+            message: 'This is my second message.'
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
     });
     expect(userTopicList(token2)).toStrictEqual({
-        topics: [
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-              topicId: topicId2,
-              title: 'Who am I?',
-              lastMessage: {
-                me: false,
-                sender: 'Faiz Arradhin',
-                message: 'This is my second message.'
-              }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
           }
-        ]
-    }); 
+        },
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: false,
+            sender: 'Faiz Arradhin',
+            message: 'This is my second message.'
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
+    });
 
     sleepSync(1 * 1000);
     userPost(token3, topicId2, { message: 'This is his first second message.' });
     expect(userTopicList(token)).toStrictEqual({
-        topics: [
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-              topicId: topicId2,
-              title: 'Who am I?',
-              lastMessage: {
-                me: false,
-                sender: 'Faiz Arradhin',
-                message: 'This is his first second message.'
-              }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
           }
-        ]
+        },
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: false,
+            sender: 'Faiz Arradhin',
+            message: 'This is his first second message.'
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
     });
     expect(userTopicList(token2)).toStrictEqual({
-        topics: [
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-              topicId: topicId2,
-              title: 'Who am I?',
-              lastMessage: {
-                me: false,
-                sender: 'Faiz Arradhin',
-                message: 'This is his first second message.'
-              }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
           }
-        ]
-    }); 
+        },
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: false,
+            sender: 'Faiz Arradhin',
+            message: 'This is his first second message.'
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
+    });
     expect(userTopicList(token3)).toStrictEqual({
-        topics: [
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-              topicId: topicId2,
-              title: 'Who am I?',
-              lastMessage: {
-                me: true,
-                sender: 'Faiz Arradhin',
-                message: 'This is his first second message.'
-              }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
           }
-        ]
+        },
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: true,
+            sender: 'Faiz Arradhin',
+            message: 'This is his first second message.'
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
     });
     expect(userTopicPin(token, topicId2)).toStrictEqual({});
     expect(userTopicList(token)).toStrictEqual({
-        topics: [
-          {
-                topicId: topicId2,
-                title: 'Who am I?',
-                lastMessage: {
-                  me: false,
-                  sender: 'Faiz Arradhin',
-                  message: 'This is his first second message.'
-                }
-          },
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: false,
+            sender: 'Faiz Arradhin',
+            message: 'This is his first second message.'
           }
-        ]
+        },
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
     });
     expect(userTopicList(token2)).toStrictEqual({
-        topics: [
-          {
-                topicId: topicId2,
-                title: 'Who am I?',
-                lastMessage: {
-                  me: false,
-                  sender: 'Faiz Arradhin',
-                  message: 'This is his first second message.'
-                }
-          },
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: false,
+            sender: 'Faiz Arradhin',
+            message: 'This is his first second message.'
           }
-        ]
-    }); 
+        },
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
+    });
     expect(userTopicList(token3)).toStrictEqual({
-        topics: [
-          {
-                topicId: topicId2,
-                title: 'Who am I?',
-                lastMessage: {
-                  me: true,
-                  sender: 'Faiz Arradhin',
-                  message: 'This is his first second message.'
-                }
-          },
-          {
-            topicId: topicId3,
-            title: 'Now what?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
-          },
-          {
-            topicId: topicId1,
-            title: 'How to do something?',
-            lastMessage: {
-              me: true,
-              sender: '',
-              message: ''
-            }
+      topics: [
+        {
+          topicId: topicId2,
+          title: 'Who am I?',
+          lastMessage: {
+            me: true,
+            sender: 'Faiz Arradhin',
+            message: 'This is his first second message.'
           }
-        ]
+        },
+        {
+          topicId: topicId3,
+          title: 'Now what?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        },
+        {
+          topicId: topicId1,
+          title: 'How to do something?',
+          lastMessage: {
+            me: true,
+            sender: '',
+            message: ''
+          }
+        }
+      ]
     });
   });
 });
@@ -766,7 +765,7 @@ describe('4. userTopicDelete()', () => {
         }
       ]
     });
-  });  
+  });
 });
 
 describe('5. userTopicPin()', () => {

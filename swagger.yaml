@@ -474,6 +474,7 @@ paths:
           description: |
             Return error if any of the following conditions met:
             - TopicId is not valid
+            - MessageId is not valid
             - MessageId is not in this topic
             - Message is empty
           schema:
@@ -517,7 +518,7 @@ paths:
             - Invalid MessageId
             - Message is not in the right topic
           schema:
-            $ref: '$/components/return/Error'
+            $ref: '#/components/return/Error'
         403:
           description: |
             Return error if any of the following conditions met:

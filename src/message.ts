@@ -44,12 +44,12 @@ export const userPostUpdate = (token: string, topicId: number, messageId: number
   const user = loggedinId(token);
 
   const chosenMessage = data.messages.find(mes => mes.messageId === messageId);
-  if (chosenMessage.username !== user.username) {
+  if (!chosenMessage || chosenMessage.username !== user.username) {
     throw HTTPError(403, 'Message not owned by this user');
   }
-  
+
   if (chosenMessage.topicId !== topicId) {
-    throw HTTPError(400, "Message is not in this topic");
+    throw HTTPError(400, 'Message is not in this topic');
   }
 
   const topic = data.topics.find(top => top.topicId === topicId);
@@ -64,5 +64,9 @@ export const userPostUpdate = (token: string, topicId: number, messageId: number
   chosenMessage.message = message;
 
   setData(data);
+  return {};
+};
+
+export const userPostDelete = (token: string, topicId: number, messageId: number): EmptyObject => {
   return {};
 }

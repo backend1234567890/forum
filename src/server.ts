@@ -23,7 +23,7 @@ import {
   userTopicPin,
   userTopicUpdate
 } from './topic';
-import { userPost, userPostUpdate } from './message';
+import { userPost, userPostDelete, userPostUpdate } from './message';
 
 const PORT: number = parseInt(process.env.PORT || config.port);
 const HOST: string = process.env.IP || '127.0.0.1';
@@ -137,6 +137,15 @@ app.put('/user/topic/:topicid/message/:messageid', (req: Request, res: Response)
   const messageId = req.params.messageid as string;
   const { message } = req.body;
   const response = userPostUpdate(token, JSON.parse(topicId), JSON.parse(messageId), message);
+
+  res.json(response);
+});
+
+app.delete('/user/topic/:topicid/message/:messageid', (req: Request, res: Response) => {
+  const token = req.headers.token as string;
+  const topicId = req.params.topicid as string;
+  const messageId = req.params.messageid as string;
+  const response = userPostDelete(token, JSON.parse(topicId), JSON.parse(messageId));
 
   res.json(response);
 });
