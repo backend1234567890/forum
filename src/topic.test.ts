@@ -1,4 +1,5 @@
 import {
+    userAuthRegister,
     userTopicCreate,
     clear
 } from './testWrapper';
@@ -10,19 +11,42 @@ beforeEach(() => {
 });
 
 describe('1. userTopicCreate()', () => {
+    let token: string;
+
     beforeEach(() => {
-        
+        token = userAuthRegister({
+            username: 'faizarradhin',
+            displayName: 'Faiz Arradhin',
+            password: 'KuCintaKau4Ever',
+            repeatPassword: 'KuCintaKau4Ever'
+        }).token;
     });
 
     test('a. Error: Invalid token', () => {
-        
+        expect(() => userTopicCreate(token + 100, {
+            title: 'How to do something?',
+            description: 'Do not know what to explain'
+        })).toThrow(HTTPError[400]);
     })
 
     test('b. Error: Inappropriate length of title', () => {
-        
+        expect(() => userTopicCreate(token, {
+            title: 'dot',
+            description: 'Do not know what to explain'
+        })).toThrow(HTTPError[400]);
+
+        expect(() => userTopicCreate(token, {
+            title: 'dot'.repeat(17),
+            description: 'Do not know what to explain'
+        })).toThrow(HTTPError[400]);
     })
 
-    test('c. Success creating topic', () => {
-        
+    test.skip('c. Success creating topic', () => {
+        const topicId = userTopicCreate(token, {
+            title: 'How to do something?',
+            description: 'Do not know what to explain'
+        }).topicId;
+
+        //waiting topicInfo
     })
 });
