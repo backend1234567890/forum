@@ -26,7 +26,7 @@ describe('1. userTopicCreate()', () => {
         expect(() => userTopicCreate(token + 100, {
             title: 'How to do something?',
             description: 'Do not know what to explain'
-        })).toThrow(HTTPError[400]);
+        })).toThrow(HTTPError[401]);
     })
 
     test('b. Error: Inappropriate length of title', () => {
