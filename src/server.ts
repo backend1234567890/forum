@@ -59,6 +59,10 @@ app.get('/', (req: Request, res: Response) => {
   //res.json({message: "Someone is accessing our URL 👀"});
   res.sendFile(path.join(__dirname, '../login.html'));
 });
+
+app.get('/forum', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../forum.html'));
+});
 // ========================================================================= //
 // YOUR ROUTES SHOULD BE DEFINED BELOW THIS DIVIDER
 // ========================================================================= //

@@ -298,7 +298,7 @@ body {
 <body>
 
 <section class="forms-section">
-    <h1 class="section-title">Animated Forms</h1>
+    <h1 class="section-title">Forum</h1>
     <div class="forms">
         <div class="form-wrapper is-active">
             <button type="button" class="switcher switcher-login">
@@ -307,10 +307,10 @@ body {
             </button>
             <form class="form form-login">
                 <fieldset>
-                    <legend>Please, enter your email and password for login.</legend>
+                    <legend>Please, enter your username and password for login.</legend>
                     <div class="input-block">
-                        <label for="login-email">E-mail</label>
-                        <input id="login-email" type="email" required>
+                        <label for="login-username">Username</label>
+                        <input id="login-username" type="text" required>
                     </div>
                     <div class="input-block">
                         <label for="login-password">Password</label>
@@ -329,8 +329,12 @@ body {
                 <fieldset>
                     <legend>Please, enter your email, password and password confirmation for sign up.</legend>
                     <div class="input-block">
-                        <label for="signup-email">E-mail</label>
-                        <input id="signup-email" type="email" required>
+                        <label for="signup-username">Username</label>
+                        <input id="signup-username" type="text" required>
+                    </div>
+                    <div class="input-block">
+                        <label for="signup-displayName">Display Name</label>
+                        <input id="signup-displayName" type="text" required>
                     </div>
                     <div class="input-block">
                         <label for="signup-password">Password</label>
@@ -341,7 +345,7 @@ body {
                         <input id="signup-password-confirm" type="password" required>
                     </div>
                 </fieldset>
-                <button type="submit" class="btn-signup">Continue</button>
+                <button type="submit" class="btn-signup" id="signupBtn">Continue</button>
             </form>
         </div>
     </div>
@@ -357,6 +361,43 @@ switchers.forEach(item => {
         this.parentElement.classList.add('is-active');
     });
 });
+
+
+// Define the function you want to run when the button is clicked
+function onSignup() {
+    fetch('/user/auth/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            username: document.getElementById('signup-username').value,
+            displayName: document.getElementById('signup-displayName').value,
+            password: document.getElementById('signup-password').value,
+            repeatPassword: document.getElementById('signup-password-confirm').value
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        console.log(response.json());
+        return response.json();
+    })
+    .then(users => {
+        console.log(`user: ${users}`);
+    })
+    .catch(error => {
+        alert('Error: ' + error.message);
+    });
+}
+
+// Add an event listener to the button
+document.getElementById("submitBtn").addEventListener("click", function(event) {
+    event.preventDefault();
+    onSignup();
+});
+
 </script>
 
 </body>
