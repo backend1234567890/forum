@@ -291,6 +291,34 @@ paths:
             - Title is more than 50 characters
           schema:
             $ref: '#/components/return/Error'
+  /user/topic/{topicid}:
+    put:
+      summary: Edit forum title and description
+      description: Already obvious from the summary
+      parameters:
+        - $ref: '#/components/header/Token'
+        - $ref: '#/components/path/TopicId'
+        - $ref: '#/components/body/TopicCreate'
+      tags:
+        - "Chat"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/components/return/Empty'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+        400:
+          description: |
+            Return error if any of the following conditions met:
+            - Title is less than 5 characters
+            - Title is more than 50 characters
+          schema:
+            $ref: '#/components/return/Error'
   /user/topic/list:
     get:
       summary: Collections of topics briefly
@@ -357,6 +385,7 @@ paths:
             - Message is empty
           schema:
             $ref: '#/components/return/Error'
+  
   /clear:
     delete:
       summary: Reset the state of the application back to the start.
