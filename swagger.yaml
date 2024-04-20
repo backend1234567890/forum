@@ -166,6 +166,15 @@ components:
         properties:
           message: 
             $ref: '#/components/prim/message' 
+    NameOnly:
+      in: body
+      name: body
+      required: true
+      schema:
+        type: object
+        properties:
+          displayName:
+            $ref: '#/components/prim/displayName'
   return:
     Token:
       type: object
@@ -206,6 +215,13 @@ components:
       properties:
         messageId: 
           $ref: '#/components/prim/messageId'
+    Profile:
+      type: object
+      properties:
+        displayName:
+          $ref: '#/components/prim/displayName'
+        username:
+          $ref: '#/components/prim/username'
 paths:
   /user/auth/register:
     post:
@@ -273,6 +289,42 @@ paths:
             - Invalid token
           schema:
             $ref: '#/components/return/Error'
+  /user/auth/profile:
+    get:
+      summary: Get User Info
+      parameters:
+        - $ref: '#/components/header/Token'
+      tags:
+        - "Main"
+      responses:
+        200: 
+          description: OK
+          schema:
+            $ref: '#/components/return/Profile'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+    put:
+      summary: Edit displayName
+      parameters:
+        - $ref: '#/components/header/Token'
+        - $ref: '#/components/body/NameOnly'
+      tags:
+        - "Main"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/components/return/Empty'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'        
   /user/topic/create:
     post:
       summary: Create new topic
@@ -538,7 +590,7 @@ paths:
             $ref: '#/components/return/Empty'
 
 securityDefinitions:
-  Iteration 3 Token Authentication:
+  Token Authentication:
     type: apiKey
     name: token
     in: header
