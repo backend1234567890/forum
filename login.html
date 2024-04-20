@@ -388,6 +388,7 @@ function onSignup() {
     })
     .then(data => {
         console.log('Registration successful:', data);
+        window.localStorage.setItem('token', data.token);
         window.location.href = '/forum';
     })
     .catch(error => {

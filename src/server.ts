@@ -62,7 +62,10 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/forum', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, '../forum.html'));
+  const token = req.headers.token;
+  res.sendFile(path.join(__dirname, '../forum.html'), {
+    token: token
+  });
 });
 // ========================================================================= //
 // YOUR ROUTES SHOULD BE DEFINED BELOW THIS DIVIDER
