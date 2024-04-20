@@ -178,7 +178,21 @@ export const userTopicUpdate = (token: string, topicId: number, message: Topic) 
 export const userPost = (token: string, topicId: number, message: Posting) => {
   const res = request(
     'POST',
-    SERVER_URL + '/user/topic/' + topicId + '/post',
+    SERVER_URL + '/user/topic/' + topicId + '/message',
+    {
+      headers: { token },
+      json: message
+    }
+  );
+
+  throwingError(res.statusCode, res.body.toString());
+  return JSON.parse(res.body.toString());
+};
+
+export const userPostUpdate = (token: string, topicId: number, messageId: number, message: Posting) => {
+  const res = request(
+    'PUT',
+    SERVER_URL + '/user/topic/' + topicId + '/message/' + messageId,
     {
       headers: { token },
       json: message

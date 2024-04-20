@@ -426,7 +426,7 @@ paths:
             - Invalid topicId
           schema:
             $ref: '#/components/return/Error'
-  /user/topic/{topicid}/post:
+  /user/topic/{topicid}/message:
     post:
       summary: Send a message to forum
       description: yeey

@@ -38,3 +38,7 @@ export const userPost = (token: string, topicId: number, message: string): Messa
     messageId
   };
 };
+
+export const userPostUpdate = (token: string, topicId: number, messageId: number, message: string): EmptyObject => {
+  return {};
+}
