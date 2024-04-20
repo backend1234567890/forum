@@ -6,6 +6,21 @@ export interface TopicId {
     topicId: number;
 }
 
+export interface MessageInfo {
+    me: boolean;
+    sender: string;
+    messageId: number;
+    message: string;
+    timeSent: number;
+}
+
+export interface TopicInfo {
+    topicId: number;
+    title: string;
+    description: string;
+    messages: MessageInfo[];
+}
+
 export const userTopicCreate = (token: string, title: string, description: string): TopicId => {
     const data = getData();
     loggedinId(token).username;
@@ -26,5 +41,14 @@ export const userTopicCreate = (token: string, title: string, description: strin
     setData(data);
     return {
         topicId
+    }
+}
+
+export const userTopicInfo = (token: string, topicId: number): TopicInfo => {
+    return {
+        topicId: 1234567,
+        title: "Topic Title",
+        description: "Description doesn't need to be ver long",
+        messages:[]
     }
 }

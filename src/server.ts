@@ -16,7 +16,8 @@ import {
   userAuthLogout
 } from './auth';
 import {
-  userTopicCreate
+  userTopicCreate,
+  userTopicInfo
 } from './topic';
 
 const PORT: number = parseInt(process.env.PORT || config.port);
@@ -72,6 +73,14 @@ app.post('/user/topic/create', (req: Request, res: Response) => {
   const token = req.headers.token as string;
   const { title, description } = req.body
   const response = userTopicCreate(token, title, description);
+
+  res.json(response);
+});
+
+app.get('/user/topic/:topicid/info', (req: Request, res: Response) => {
+  const token = req.headers.token as string;
+  const topicId =  req.params.topicid as string;
+  const response = userTopicInfo(token, JSON.parse(topicId));
 
   res.json(response);
 });

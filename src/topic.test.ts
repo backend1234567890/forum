@@ -1,6 +1,7 @@
 import {
     userAuthRegister,
     userTopicCreate,
+    userTopicInfo,
     clear
 } from './testWrapper';
 
@@ -48,5 +49,31 @@ describe('1. userTopicCreate()', () => {
         }).topicId;
 
         //waiting topicInfo
+    })
+});
+
+describe('1. userTopicCreate()', () => {
+    let token: string;
+
+    beforeEach(() => {
+        token = userAuthRegister({
+            username: 'faizarradhin',
+            displayName: 'Faiz Arradhin',
+            password: 'KuCintaKau4Ever',
+            repeatPassword: 'KuCintaKau4Ever'
+        }).token;
+    });
+
+
+    test('a. Error: Invalid token', () => {
+
+    })
+
+    test('b. Error: Invalid topicId', () => {
+        
+    })
+
+    test('c. Success', () => {
+        
     })
 });
