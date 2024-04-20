@@ -50,6 +50,8 @@ export const userAuthRegister = (message: Register) => {
       json: message
     }
   );
+
+  throwingError(res.statusCode, res.body.toString());
   return JSON.parse(res.body.toString());
 };
 

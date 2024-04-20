@@ -1,14 +1,42 @@
 import fs from 'fs';
+import crypto from 'crypto';
 export type EmptyObject = Record<never, never>;
 
+const SECRET_TEXT = 'JanganTinggalkanAkuSendiri';
+
+export const getHash = (plainText: string) => {
+  return crypto.createHash('sha256').update(plainText + SECRET_TEXT).digest('hex');
+};
+
+export const randomizer = () => {
+  return Math.floor(Math.random() * (100)) + 1;
+};
+
+export const SECRET_INT = randomizer();
+
+export const getHashInteger = (integerValue: number, multipliers: number, range = 1000000000) => {
+  const hash = crypto.createHash('sha256')
+    .update(String(integerValue * multipliers) + SECRET_TEXT + SECRET_INT)
+    .digest('hex');
+
+  // Use the first 8 characters (4 bytes) of the hash as an integer
+  const hashedInt = parseInt(hash.slice(0, 8), 16);
+
+  // Map the hashed integer to the desired range
+  const mappedInt = Math.floor((hashedInt / (2 ** 32)) * range);
+
+  return mappedInt;
+};
+
 export interface Users {
+    userId: number;
     username: string;
     displayName: string;
     password: string;
 }
 
 export interface Tokens {
-    token: string;
+    token: number;
     userId: number;
 }
 
