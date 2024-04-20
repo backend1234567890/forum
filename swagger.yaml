@@ -104,6 +104,12 @@ components:
       required: true
       schema:
         $ref: '#/components/prim/topicId'
+    MessageId:
+      in: path
+      name: messageId
+      required: true
+      schema:
+        $ref: '#/components/prim/messageId'
   header:
     Token:
       in: header
@@ -385,7 +391,40 @@ paths:
             - Message is empty
           schema:
             $ref: '#/components/return/Error'
-  
+  /user/topic/{topicid}/message/{messageid}:
+    put:
+      summary: Edit message body
+      decription: Edit message... Time sent is updated
+      parameters:
+        - $ref: '#/components/header/Token'
+        - $ref: '#/components/path/TopicId'
+        - $ref: '#/components/path/MessageId'
+        - $ref: '#/components/body/sendMessage'
+      tags:
+        - "Chat"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/components/return/Empty'
+        400:
+          description: |
+            Return error if any of the following conditions met:
+            - Message is empty
+          schema:
+            $ref: '#/components/return/Error'
+        401:
+          description: |
+            Return error if any of the following conditions met:
+            - Invalid token
+          schema:
+            $ref: '#/components/return/Error'
+        403:
+          description: |
+            Return error if any of the following conditions met:
+            - message is not sent by the correct sender
+          schema:
+            $ref: '#/components/return/Error'
   /clear:
     delete:
       summary: Reset the state of the application back to the start.
