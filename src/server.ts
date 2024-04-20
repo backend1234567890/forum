@@ -27,6 +27,21 @@ import {
 } from './topic';
 import { userPost, userPostDelete, userPostUpdate } from './message';
 
+import { createClient } from '@vercel/kv';
+
+// Replace this with your API_URL
+// E.g. https://large-poodle-44208.kv.vercel-storage.com
+const KV_REST_API_URL="https://viable-pangolin-51033.upstash.io";
+// Replace this with your API_TOKEN
+// E.g. AaywASQgOWE4MTVkN2UtODZh...
+const KV_REST_API_TOKEN="AcdZASQgNDgxOTZkMzYtY2M4Zi00ZTY2LWIwNTQtYmI4ZWM5N2Q5NjI4ODM4ZDZkNzE3MDdhNGIwMDgxNmY5OWY4OWZjNzgwNGY=";
+
+const database = createClient({
+  url: KV_REST_API_URL,
+  token: KV_REST_API_TOKEN,
+});
+
+
 const PORT: number = parseInt(process.env.PORT || config.port);
 const HOST: string = process.env.IP || '127.0.0.1';
 
@@ -48,6 +63,18 @@ app.use('/docs', sui.serve, sui.setup(YAML.parse(file), { swaggerOptions: { docE
 // ========================================================================= //
 // YOUR ROUTES SHOULD BE DEFINED BELOW THIS DIVIDER
 // ========================================================================= //
+
+app.get('/data', async (req: Request, res: Response) => {
+  const data = await database.hgetall("data:names");
+  res.status(200).json(data);
+});
+
+app.put('/data', async (req: Request, res: Response) => {
+  const { data } = req.body;
+  await database.hset("data:names", { data });
+  return res.status(200).json({});
+});
+
 
 app.delete('/clear', (req: Request, res: Response) => {
   const response = clear();
