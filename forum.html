@@ -144,6 +144,19 @@
       z-index: 1000;
     }
 
+    .topicUpdate {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
     .popup-content .overlay {
       text-align: center;
     }
@@ -310,6 +323,17 @@
         <label for="desc" class="editdisplayname">Description: </label>
         <input type="text" id="desc"><br><br>
         <button onclick="createTopic()" class="confirmeditname">Confirm</button>
+      </div>
+    </div>
+
+    <div class="topicUpdate" id="topicUpdate">
+      <div class="popup-content">
+        <span class="close" onclick="closeTopicUpdate()">&times;</span>
+        <label for="titlecreate1" class="editdisplayname">Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
+        <input type="text" id="titlecreate1"><br><br>
+        <label for="desc1" class="editdisplayname">Description: </label>
+        <input type="text" id="desc1"><br><br>
+        <button id="updating" class="confirmeditname">Confirm</button>
       </div>
     </div>
 
@@ -486,6 +510,13 @@
       document.body.style.overflow = "hidden"; // Disable scrolling
     }
 
+    function updateTopicBtn(topicId) {
+      document.getElementById("topicUpdate").style.display = "block";
+      document.getElementById("topicUpdate").setAttribute('topicId', topicId);
+      document.getElementById("overlay").style.display = "block";
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    }
+
   function closePopup() {
     document.getElementById("popup").style.display = "none";
     document.getElementById("overlay").style.display = "none";
@@ -494,6 +525,12 @@
 
   function closeTopicCreate() {
     document.getElementById("topicCreate").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+    document.body.style.overflow = ""; // Enable scrolling
+  }
+
+  function closeTopicUpdate() {
+    document.getElementById("topicUpdate").style.display = "none";
     document.getElementById("overlay").style.display = "none";
     document.body.style.overflow = ""; // Enable scrolling
   }
@@ -629,12 +666,86 @@
     });    
   }
 
+  function deleting (topicId) {
+    fetch('/user/topic/' + topicId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    })
+    .catch(error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.setItem('errorcode', 'unauthorized');
+            window.location.href = '/error';
+        } else {
+            alert(error)
+        }
+    });       
+  }
+
+  function updating (topicId) {
+    var newTitle = document.getElementById("titlecreate1").value;
+    var newDesc = document.getElementById("desc1").value;
+
+    fetch('/user/topic/' + topicId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        },
+        body: JSON.stringify({
+            'title': newTitle,
+            'description': newDesc
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    }).then(data => {
+        writeTopics();
+        closeTopicUpdate();
+    })
+    .catch(error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.setItem('errorcode', 'unauthorized');
+            window.location.href = '/error';
+        } else {
+            alert(error)
+        }
+    });       
+  }
+
+  document.getElementById("updating").addEventListener('click', () => {
+    const topicId = document.getElementById("topicUpdate").getAttribute('topicId');
+    console.log(topicId)
+    updating(topicId);
+  })
+
   document.querySelectorAll('#contextMenu div').forEach(option => {
     option.addEventListener('click', (e) => {
       const optionId = e.target.id; // Get the ID of the clicked option
       const topicId = e.target.getAttribute('data-topic-id');
       if (optionId === 'option1') {
         pinning(topicId);
+      } else if (optionId === 'option2') {
+        updateTopicBtn(topicId);
+      } else if (optionId === 'option3') {
+        deleting(topicId);
       }
       writeTopics()
       contextMenu.style.display = 'none';
