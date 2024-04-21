@@ -67,8 +67,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.get('/forum', (req: Request, res: Response) => {
-  const token = req.headers.token;
-  res.render('forum', { token: token });
+  res.sendFile(path.join(__dirname, '../forum.html'));
+});
+
+app.get('/error', (req: Request, res: Response) => {
+  const errorCode = req.params.errorcode as string;
+  res.sendFile(path.join(__dirname, '../error.html'));
+});
+
+app.get('/editicon', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../edit.png'));
 });
 // ========================================================================= //
 // YOUR ROUTES SHOULD BE DEFINED BELOW THIS DIVIDER

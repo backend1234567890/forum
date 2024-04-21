@@ -132,15 +132,18 @@ export const userAuthProfile = (token: string): Profile => {
 
 export const userAuthEdit = (token: string, displayName: string): EmptyObject => {
   const data = getData();
-  loggedinId(token);
+  const username = loggedinId(token).username;
 
   if (displayName === '') {
     throw HTTPError(400, 'displayName cannot be empty');
   }
 
-  const selectedUser = data.users.find(u => u.username);
+  const selectedUser = data.users.find(u => u.username === username);
   selectedUser.displayName = displayName;
 
   setData(data);
-  return {};
+  return {
+    displayName,
+    username
+  };
 };

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forum</title>
+<link href='https://fonts.googleapis.com/css?family=Chela One' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Chelsea Market' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Acme' rel='stylesheet'>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: rgba(9, 109, 134, 0.884);
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+  .title {
+    font-size: 80px;
+    font-weight: bold;
+    position: absolute;
+    color: rgb(0, 0, 0);
+    top: -8px;
+    left: 20px;
+    font-family: Chela One;
+  }
+  .username {
+    font-size: 30px;
+    position: absolute;
+    color: rgb(0, 0, 0);
+    font-family: Chelsea Market;
+    top: 45px;
+  }
+  .container {
+    width: calc(50% - 40px); /* half of the page width minus margin */
+    height: calc(100vh - 120px); /* full height of the viewport minus margin */
+    overflow-y: auto; /* add scrollbar if content overflows vertically */
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid white;
+    position: absolute;
+    top: 60px; /* push the container down to avoid overlapping with the title */
+    left: 0px;
+    background-color: rgba(2, 49, 16, 0.904);
+    border-top-left-radius: 25px; 
+    border-bottom-left-radius: 25px;
+  }
+  .container:nth-child(2) {
+    left: calc(50% - 20px); /* position the second container to the right of the first one */
+    border-top-right-radius: 25px; 
+    border-bottom-right-radius: 25px;
+    border-top-left-radius: 0px; 
+    border-bottom-left-radius: 0px;
+  }
+
+
+  img {
+    position: relative;
+    cursor: pointer;
+    top: -35px; /* Adjust top position as needed */
+    left: 8px; /* Adjust left position as needed */
+    width: 25px; /* Adjust image width as needed */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  
+  .button {
+    padding: 5px 10px;
+    font-family: 'Acme';
+    background-color: #b12828;
+    color: rgb(56, 56, 56);
+    border: none;
+    border-radius: 8px;
+    font-size: 33px;
+    cursor: pointer;
+    position: absolute;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    left: calc(100% - 135px);
+    top: 13.2px;
+  }
+  
+  .button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s ease;
+    z-index: 0;
+  }
+  
+  .button:hover::before {
+    width: 0;
+    height: 0;
+  }
+  
+  .button span {
+    position: relative;
+    z-index: 1;
+  }
+
+  
+  .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    .popup-content {
+      text-align: center;
+    }
+
+    .close {
+      position: absolute;
+      top: -10px;
+      right: 0px;
+      cursor: pointer;
+      color:black;
+      font-size: 40px; /* Increase font size */
+      padding: 5px; /* Increase padding */
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .editdisplayname {
+        color: black;   
+    }
+
+    .confirmeditname {
+        position: absolute;
+        right: 21px;
+        bottom: 14px;
+        background-color: #723e3e;
+        color: rgb(255, 255, 255);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        overflow: hidden;
+        padding: 2px 4px;
+        font-size: 15px;
+    }
+</style>
+</head>
+<body>
+    <div class="title"><span id="dynamicContent"></span><span class="username" id="username"></span><img src="/editicon" alt="Edit Display Name" onclick="openPopup()"></div>
+    <div class="container">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum justo at justo fermentum, at lobortis purus laoreet. Integer ut enim nec lectus tincidunt commodo. In hac habitasse platea dictumst. Vivamus porta ultrices justo nec lobortis. Nam nec condimentum orci. Nulla facilisi. Nam condimentum mauris justo, eu tincidunt lorem auctor nec. Duis quis metus non elit posuere vehicula et in lacus. Donec quis libero vel sem hendrerit suscipit. Nullam ut justo vitae tellus varius bibendum. Fusce efficitur enim vel metus dignissim placerat. Pellentesque in volutpat dui, ut tincidunt ligula. In et metus vel nulla condimentum blandit et vel lacus. Integer euismod nec ligula sed euismod. Nullam vehicula sem nec dolor iaculis luctus.</p>
+        <p>Sed sagittis tellus non dui convallis, id cursus leo suscipit. Phasellus a enim sed libero scelerisque volutpat. Nulla facilisi. Integer non turpis sit amet odio tristique convallis. Suspendisse tincidunt lorem ac augue laoreet, a aliquam metus fermentum. In et fermentum risus, eu aliquet mi. Suspendisse potenti. Duis vehicula semper ex nec luctus. Nullam interdum, mi at sagittis vulputate, leo leo ultrices enim, sit amet ultrices leo sapien non felis. In hac habitasse platea dictumst. Cras commodo, ligula eget euismod vehicula, arcu justo ultricies risus, in mattis lorem ex at leo.</p>
+        <!-- You can add more content here to test the scrollbar -->
+    </div>
+
+    <div class="container">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum justo at justo fermentum, at lobortis purus laoreet. Integer ut enim nec lectus tincidunt commodo. In hac habitasse platea dictumst. Vivamus porta ultrices justo nec lobortis. Nam nec condimentum orci. Nulla facilisi. Nam condimentum mauris justo, eu tincidunt lorem auctor nec. Duis quis metus non elit posuere vehicula et in lacus. Donec quis libero vel sem hendrerit suscipit. Nullam ut justo vitae tellus varius bibendum. Fusce efficitur enim vel metus dignissim placerat. Pellentesque in volutpat dui, ut tincidunt ligula. In et metus vel nulla condimentum blandit et vel lacus. Integer euismod nec ligula sed euismod. Nullam vehicula sem nec dolor iaculis luctus.</p>
+        <p>Sed sagittis tellus non dui convallis, id cursus leo suscipit. Phasellus a enim sed libero scelerisque volutpat. Nulla facilisi. Integer non turpis sit amet odio tristique convallis. Suspendisse tincidunt lorem ac augue laoreet, a aliquam metus fermentum. In et fermentum risus, eu aliquet mi. Suspendisse potenti. Duis vehicula semper ex nec luctus. Nullam interdum, mi at sagittis vulputate, leo leo ultrices enim, sit amet ultrices leo sapien non felis. In hac habitasse platea dictumst. Cras commodo, ligula eget euismod vehicula, arcu justo ultricies risus, in mattis lorem ex at leo.</p>
+        <!-- You can add more content here to test the scrollbar -->
+    </div>
+    <button class="button" id="logoutBtn"><span>Logout</span></button>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <div class="popup-content">
+          <span class="close" onclick="closePopup()">&times;</span>
+          <label for="inputField" class="editdisplayname">New Display Name: </label>
+          <input type="text" id="inputField">
+          <br>
+          <br>
+          <button onclick="submitText()" class="confirmeditname">Confirm</button>
+        </div>
+      </div>
+</body>
+
+<script>
+    const token = localStorage.getItem('token');
+    
+    fetch('/user/auth/profile', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById("dynamicContent").innerText = data.displayName;
+        document.getElementById("username").innerText = data.username;
+    })
+    .catch(error => {
+        localStorage.setItem('errorcode', 'unauthorized');
+        window.location.href = '/error';
+    });
+
+    function onLogout() {
+        fetch('/user/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    const errorMessage = error && error.error ? error.error : 'An error occurred';
+                    throw new Error(errorMessage);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Logout successful:', data);
+            
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        })
+        .catch(error => {
+            localStorage.setItem('errorcode', 'unauthorized');
+            window.location.href = '/error';
+        });
+    }
+
+    function updateValid() {
+        const validTill = parseInt(localStorage.getItem('validtill'));
+        if (Date.now() > validTill) {
+            onLogout();
+        }
+        localStorage.setItem('validtill', Date.now() + (10 * 60 * 1000));
+    }
+
+    window.onload = function (){
+        updateValid();
+    }
+    
+    document.getElementById("logoutBtn").addEventListener("click", function(event) {
+        onLogout();
+    });
+
+
+    function openPopup() {
+    document.getElementById("popup").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+    document.body.style.overflow = "hidden"; // Disable scrolling
+  }
+
+  function closePopup() {
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+    document.body.style.overflow = ""; // Enable scrolling
+  }
+
+  function submitText() {
+    var inputText = document.getElementById("inputField").value;
+    console.log("Submitted text:", inputText);
+    fetch('/user/auth/profile', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        },
+        body: JSON.stringify({
+            'displayName': inputText
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById("dynamicContent").innerText = data.displayName;
+        document.getElementById("username").innerText = data.username;
+        closePopup();
+    })
+    .catch(error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.setItem('errorcode', 'unauthorized');
+            window.location.href = '/error';
+        } else {
+            alert(error)
+        }
+    });
+  }
+</script>
+</html>

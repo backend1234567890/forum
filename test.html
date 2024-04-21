@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forum</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: rgba(9, 109, 134, 0.884);
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+  .title {
+    font-size: 50px;
+    font-weight: bold;
+    position: absolute;
+    color: rgb(0, 0, 0);
+    top: 20px;
+    left: 20px;
+    font-family: comic sans ms, cursive;
+  }
+  .container {
+    width: calc(50% - 40px); /* half of the page width minus margin */
+    height: calc(100vh - 120px); /* full height of the viewport minus margin */
+    overflow-y: auto; /* add scrollbar if content overflows vertically */
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid white;
+    position: absolute;
+    top: 60px; /* push the container down to avoid overlapping with the title */
+    left: 0px;
+    background-color: rgba(2, 49, 16, 0.904);
+  }
+  .container:nth-child(2) {
+    left: calc(50% - 20px); /* position the second container to the right of the first one */
+  }
+</style>
+</head>
+<body>
+
+<div class="title">Forum</div>
+
+<div class="container">
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum justo at justo fermentum, at lobortis purus laoreet. Integer ut enim nec lectus tincidunt commodo. In hac habitasse platea dictumst. Vivamus porta ultrices justo nec lobortis. Nam nec condimentum orci. Nulla facilisi. Nam condimentum mauris justo, eu tincidunt lorem auctor nec. Duis quis metus non elit posuere vehicula et in lacus. Donec quis libero vel sem hendrerit suscipit. Nullam ut justo vitae tellus varius bibendum. Fusce efficitur enim vel metus dignissim placerat. Pellentesque in volutpat dui, ut tincidunt ligula. In et metus vel nulla condimentum blandit et vel lacus. Integer euismod nec ligula sed euismod. Nullam vehicula sem nec dolor iaculis luctus.</p>
+  <p>Sed sagittis tellus non dui convallis, id cursus leo suscipit. Phasellus a enim sed libero scelerisque volutpat. Nulla facilisi. Integer non turpis sit amet odio tristique convallis. Suspendisse tincidunt lorem ac augue laoreet, a aliquam metus fermentum. In et fermentum risus, eu aliquet mi. Suspendisse potenti. Duis vehicula semper ex nec luctus. Nullam interdum, mi at sagittis vulputate, leo leo ultrices enim, sit amet ultrices leo sapien non felis. In hac habitasse platea dictumst. Cras commodo, ligula eget euismod vehicula, arcu justo ultricies risus, in mattis lorem ex at leo.</p>
+  <!-- You can add more content here to test the scrollbar -->
+</div>
+
+<div class="container">
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum justo at justo fermentum, at lobortis purus laoreet. Integer ut enim nec lectus tincidunt commodo. In hac habitasse platea dictumst. Vivamus porta ultrices justo nec lobortis. Nam nec condimentum orci. Nulla facilisi. Nam condimentum mauris justo, eu tincidunt lorem auctor nec. Duis quis metus non elit posuere vehicula et in lacus. Donec quis libero vel sem hendrerit suscipit. Nullam ut justo vitae tellus varius bibendum. Fusce efficitur enim vel metus dignissim placerat. Pellentesque in volutpat dui, ut tincidunt ligula. In et metus vel nulla condimentum blandit et vel lacus. Integer euismod nec ligula sed euismod. Nullam vehicula sem nec dolor iaculis luctus.</p>
+  <p>Sed sagittis tellus non dui convallis, id cursus leo suscipit. Phasellus a enim sed libero scelerisque volutpat. Nulla facilisi. Integer non turpis sit amet odio tristique convallis. Suspendisse tincidunt lorem ac augue laoreet, a aliquam metus fermentum. In et fermentum risus, eu aliquet mi. Suspendisse potenti. Duis vehicula semper ex nec luctus. Nullam interdum, mi at sagittis vulputate, leo leo ultrices enim, sit amet ultrices leo sapien non felis. In hac habitasse platea dictumst. Cras commodo, ligula eget euismod vehicula, arcu justo ultricies risus, in mattis lorem ex at leo.</p>
+  <!-- You can add more content here to test the scrollbar -->
+</div>
+
+</body>
+</html>

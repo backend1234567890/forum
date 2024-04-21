@@ -317,7 +317,7 @@ body {
                         <input id="login-password" type="password" required>
                     </div>
                 </fieldset>
-                <button type="submit" class="btn-login">Login</button>
+                <button type="submit" class="btn-login" id="loginBtn">Login</button>
             </form>
         </div>
         <div class="form-wrapper">
@@ -388,7 +388,43 @@ function onSignup() {
     })
     .then(data => {
         console.log('Registration successful:', data);
-        window.localStorage.setItem('token', data.token);
+		const token = data.token; // Assuming the token is included in the response data
+		// Redirect to forum page with token in the header
+		localStorage.setItem('token', token);
+		localStorage.setItem('validtill', Date.now() + (10 * 60 * 1000));
+        window.location.href = '/forum';
+    })
+    .catch(error => {
+        alert('Error: ' + error.message);
+    });
+}
+
+function onLogin() {
+    fetch('/user/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            username: document.getElementById('login-username').value,
+            password: document.getElementById('login-password').value,
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Login successful:', data);
+		const token = data.token; // Assuming the token is included in the response data
+		// Redirect to forum page with token in the header
+		localStorage.setItem('validtill', Date.now() + (10 * 60 * 1000));
+		localStorage.setItem('token', token);
         window.location.href = '/forum';
     })
     .catch(error => {
@@ -400,6 +436,11 @@ function onSignup() {
 document.getElementById("signupBtn").addEventListener("click", function(event) {
     event.preventDefault();
     onSignup();
+});
+
+document.getElementById("loginBtn").addEventListener("click", function(event) {
+    event.preventDefault();
+    onLogin();
 });
 
 </script>

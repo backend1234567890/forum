@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+</head>
+<body>
+    <script>
+        // Retrieve the token from localStorage
+        const token = localStorage.getItem('token');
+
+        // Check if token exists
+        if (token) {
+            // Token exists, you can use it as needed
+            console.log('Token:', token);
+        } else {
+            // Token doesn't exist, handle the case where the user is not authenticated
+            console.log('No token found. User not authenticated.');
+            // Redirect the user to the login page or perform any other action
+            // For example, redirecting to the login page:
+            // window.location.href = '/login.html';
+        }
+
+        window.addEventListener('beforeunload', function(event) {
+            // Remove the token from localStorage
+            localStorage.removeItem('token');
+        });
+    </script>
+    <!-- Your HTML content goes here -->
+</body>
+</html>
