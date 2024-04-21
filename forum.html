@@ -655,6 +655,8 @@
             });
         }
         return response.json();
+    }).then(data => {
+        writeTopics();
     })
     .catch(error => {
         if (error.response && error.response.status === 401) {
@@ -682,6 +684,8 @@
             });
         }
         return response.json();
+    }).then(data => {
+        writeTopics();
     })
     .catch(error => {
         if (error.response && error.response.status === 401) {
@@ -747,7 +751,6 @@
       } else if (optionId === 'option3') {
         deleting(topicId);
       }
-      writeTopics()
       contextMenu.style.display = 'none';
     });
   });
