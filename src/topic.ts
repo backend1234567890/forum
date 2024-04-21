@@ -29,6 +29,7 @@ export interface BriefMessage {
 }
 
 export interface Topics {
+    pinned: boolean,
     topicId: number;
     title: string;
     lastMessage: BriefMessage;
@@ -96,6 +97,7 @@ export const userTopicList = (token: string): TopicList => {
   const topics = data.topics.filter(topic => topic.pin === false).map(topic => {
     if (data.messages.filter(mes => mes.topicId === topic.topicId).length === 0) {
       return {
+        pinned: false,
         topicId: topic.topicId,
         title: topic.title,
         lastMessage: {
@@ -115,6 +117,7 @@ export const userTopicList = (token: string): TopicList => {
       me = false;
     }
     return {
+      pinned: false,
       topicId: topic.topicId,
       title: topic.title,
       lastMessage: {
@@ -128,6 +131,7 @@ export const userTopicList = (token: string): TopicList => {
   const pinnedTopics = data.topics.filter(topic => topic.pin === true).map(topic => {
     if (data.messages.filter(mes => mes.topicId === topic.topicId).length === 0) {
       return {
+        pinned: true,
         topicId: topic.topicId,
         title: topic.title,
         lastMessage: {
@@ -147,6 +151,7 @@ export const userTopicList = (token: string): TopicList => {
       me = false;
     }
     return {
+      pinned: true,
       topicId: topic.topicId,
       title: topic.title,
       lastMessage: {
@@ -187,7 +192,7 @@ export const userTopicPin = (token: string, topicId: number): EmptyObject => {
     throw HTTPError(400, 'Topic Id is not valid');
   }
 
-  if (data.topics.filter(top => top.pin === true).length === 3) {
+  if (!topic.pin && data.topics.filter(top => top.pin === true).length === 3) {
     throw HTTPError(400, 'Can only pin 3 topics');
   }
 

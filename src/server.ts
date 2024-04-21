@@ -82,6 +82,10 @@ app.get('/editicon', (req: Request, res: Response) => {
 app.get('/addicon', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../add.png'));
 });
+
+app.get('/pinicon', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../pin.png'));
+});
 // ========================================================================= //
 // YOUR ROUTES SHOULD BE DEFINED BELOW THIS DIVIDER
 // ========================================================================= //

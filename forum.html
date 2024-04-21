@@ -237,18 +237,41 @@
 
     .addTopicBtn {
       position: absolute;
-      top: calc(100% - 48px);
-      left: calc(40% + 20px);
-      width: 60px;
+      top: calc(100% - 100px);
+      left: calc(40% + 50px);
+      width: 70px;
       z-index: 1;
     }
 
     .addTopicBtn img {
+      position:fixed;
       transition: transform 0.3s ease;
     }
 
     .addTopicBtn:hover img {
       transform: rotate(90deg);
+    }
+
+    #contextMenu {
+      position: fixed;
+      z-index: 1000;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    #contextMenu div {
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    #contextMenu div:hover {
+      background-color: #f0f0f0;
+    }
+
+    .options {
+      color: black;
     }
 </style>
 </head>
@@ -262,12 +285,12 @@
 
     <div class="container">
         <table id="topicsTable" class="topicsTable"></table>
+        <div class="addTopicBtn">
+          <img src="/addicon" alt="Add Topic" class="addTopicBtn" onclick="addTopicBtn()">
+        </div>
     </div>
     <button class="button" id="logoutBtn"><span>Logout</span></button>
-    
-    <div class="addTopicBtn">
-      <img src="/addicon" alt="Add Topic" class="addTopicBtn" onclick="addTopicBtn()">
-    </div>
+  
 
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
@@ -288,6 +311,12 @@
         <input type="text" id="desc"><br><br>
         <button onclick="createTopic()" class="confirmeditname">Confirm</button>
       </div>
+    </div>
+
+    <div id="contextMenu" style="display: none;">
+      <div id="option1" class="options">Option 1</div>
+      <div id="option2" class="options">Edit Topic</div>
+      <div id="option3" class="options">Delete Topic</div>
     </div>
 </body>
 
@@ -345,10 +374,27 @@
           // Remove the last row of the table
           table.deleteRow(-1);
         }
+        const pos = [30, 105, 185];
+        let index = -1;
         for (const topic of data.topics) {
+          index += 1;
           let row = table.insertRow();
           let cell = row.insertCell();
           cell.id = JSON.stringify(topic.topicId);
+          if (topic.pinned === true) {
+            cell.id += ' true';
+            let div3 = document.createElement("div");
+            let img = document.createElement("img");
+            img.src = "/pinicon"; 
+            img.alt = "Pinned topic";
+            img.style.position = "absolute";
+            img.style.top = `calc(0% + ${pos[index]}px)`;
+            img.style.left = `calc(100% - 60px)`;
+            cell.appendChild(img);
+            cell.appendChild(div3);
+          } else {
+            cell.id += ' false';
+          }
           cell.classList.add(JSON.stringify(topic.topicId));
 
           let div = document.createElement('div');
@@ -525,5 +571,74 @@
         }
     });
   }
+  const contextMenu = document.getElementById('contextMenu');
+  const topicsTable = document.getElementById('topicsTable');
+  topicsTable.addEventListener('contextmenu', (e) => {
+    e.preventDefault(); // Prevent default context menu
+    const id = e.target.parentNode.id; // Get the topic ID from the parent cell
+    const topicId = id.substring(0, id.indexOf(" "));
+    contextMenu.style.left = `${e.pageX}px`; // Position the context menu
+    contextMenu.style.top = `${e.pageY}px`;
+    if (topicId.length !== 0) {
+      let pin = "";
+      if (id.substring(id.indexOf(" ") + 1) === 'true') {
+        pin = "Unpin Topic";
+      } else {
+        pin = "Pin Topic";
+      }
+      document.getElementById('option1').innerText = pin;
+      document.getElementById('option1').setAttribute('data-topic-id', topicId);
+      document.getElementById('option2').setAttribute('data-topic-id', topicId);
+      document.getElementById('option3').setAttribute('data-topic-id', topicId);
+      contextMenu.style.display = 'block'; // Display the context menu
+    } else {
+      contextMenu.style.display = 'none'; // Display the context menu
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+      if (!contextMenu.contains(e.target)) {
+        contextMenu.style.display = 'none';
+      }
+  });
+
+  function pinning(topicId) {
+    fetch('/user/topic/' + topicId + '/pin', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    })
+    .catch(error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.setItem('errorcode', 'unauthorized');
+            window.location.href = '/error';
+        } else {
+            alert(error)
+        }
+    });    
+  }
+
+  document.querySelectorAll('#contextMenu div').forEach(option => {
+    option.addEventListener('click', (e) => {
+      const optionId = e.target.id; // Get the ID of the clicked option
+      const topicId = e.target.getAttribute('data-topic-id');
+      if (optionId === 'option1') {
+        pinning(topicId);
+      }
+      writeTopics()
+      contextMenu.style.display = 'none';
+    });
+  });
 </script>
 </html>
