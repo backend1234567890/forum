@@ -44,8 +44,8 @@ const database = createClient({
 
 
 const PORT: number = parseInt(process.env.PORT || config.port);
-const HOST: string = DEPLOYED_URL;
-//const HOST: string = process.env.IP || '127.0.0.1'
+//const HOST: string = DEPLOYED_URL;
+const HOST: string = process.env.IP || '127.0.0.1'
 
 const app = express();
 

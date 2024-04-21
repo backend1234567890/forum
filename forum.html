@@ -7,6 +7,7 @@
 <link href='https://fonts.googleapis.com/css?family=Chela One' rel='stylesheet'>
 <link href='https://fonts.googleapis.com/css?family=Chelsea Market' rel='stylesheet'>
 <link href='https://fonts.googleapis.com/css?family=Acme' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Akaya Kanadaka' rel='stylesheet'>
 <style>
   body {
     margin: 0;
@@ -160,20 +161,66 @@
         padding: 2px 4px;
         font-size: 15px;
     }
+
+    .topicsTable td {
+      height: 50px;
+    }
+
+    .topicsTable {
+      width: calc(100%);
+      border-collapse: collapse;
+      background-color:rgba(95, 158, 160, 0.288);
+      border-radius: 15px;
+    }
+
+    .topicsTable td, .topicsTable th {
+        border: 10px solid rgba(2, 49, 16, 0.904); /* Set borders for cells */
+        padding: 8px; /* Optional: Add padding to cells for better spacing */
+    }
+    
+    .topicsTable td:first-child, .topicsTable th:first-child {
+        border-left: none; /* Remove left border for first column */
+    }
+    
+    .topicsTable td:last-child, .topicsTable th:last-child {
+        border-right: none; /* Remove right border for last column */
+    }
+
+    .topicsTable tr:first-child td,
+    .topicsTable tr:first-child th,
+    .topicsTable tr:last-child td,
+    .topicsTable tr:last-child th {
+        border-top: none; /* Remove top border for the first row and bottom border for the last row */
+        border-bottom: none;
+    }
+
+    .topicList {
+      position: relative;
+      top: -8px;
+      font-family: Akaya Kanadaka;
+      font-size: 23px;
+      text-decoration: underline;
+    }
+
+    .lastMessage {
+      position: relative;
+      top: 0px;
+      font-family: Akaya Kanadaka;
+      font-size: 18px;
+      font-weight: lighter;
+    }
 </style>
 </head>
 <body>
     <div class="title"><span id="dynamicContent"></span><span class="username" id="username"></span><img src="/editicon" alt="Edit Display Name" onclick="openPopup()"></div>
     <div class="container">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum justo at justo fermentum, at lobortis purus laoreet. Integer ut enim nec lectus tincidunt commodo. In hac habitasse platea dictumst. Vivamus porta ultrices justo nec lobortis. Nam nec condimentum orci. Nulla facilisi. Nam condimentum mauris justo, eu tincidunt lorem auctor nec. Duis quis metus non elit posuere vehicula et in lacus. Donec quis libero vel sem hendrerit suscipit. Nullam ut justo vitae tellus varius bibendum. Fusce efficitur enim vel metus dignissim placerat. Pellentesque in volutpat dui, ut tincidunt ligula. In et metus vel nulla condimentum blandit et vel lacus. Integer euismod nec ligula sed euismod. Nullam vehicula sem nec dolor iaculis luctus.</p>
-        <p>Sed sagittis tellus non dui convallis, id cursus leo suscipit. Phasellus a enim sed libero scelerisque volutpat. Nulla facilisi. Integer non turpis sit amet odio tristique convallis. Suspendisse tincidunt lorem ac augue laoreet, a aliquam metus fermentum. In et fermentum risus, eu aliquet mi. Suspendisse potenti. Duis vehicula semper ex nec luctus. Nullam interdum, mi at sagittis vulputate, leo leo ultrices enim, sit amet ultrices leo sapien non felis. In hac habitasse platea dictumst. Cras commodo, ligula eget euismod vehicula, arcu justo ultricies risus, in mattis lorem ex at leo.</p>
-        <!-- You can add more content here to test the scrollbar -->
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum justo at justo fermentum, at lobortis purus laoreet. Integer ut enim nec lectus tincidunt commodo. In hac habitasse platea dictumst. Vivamus porta ultrices justo nec lobortis. Nam nec condimentum orci. Nulla facilisi. Nam condimentum mauris justo, eu tincidunt lorem auctor nec. Duis quis metus non elit posuere vehicula et in lacus. Donec quis libero vel sem hendrerit suscipit. Nullam ut justo vitae tellus varius bibendum. Fusce efficitur enim vel metus dignissim placerat. Pellentesque in volutpat dui, ut tincidunt ligula. In et metus vel nulla condimentum blandit et vel lacus. Integer euismod nec ligula sed euismod. Nullam vehicula sem nec dolor iaculis luctus.</p>
+      <p>Sed sagittis tellus non dui convallis, id cursus leo suscipit. Phasellus a enim sed libero scelerisque volutpat. Nulla facilisi. Integer non turpis sit amet odio tristique convallis. Suspendisse tincidunt lorem ac augue laoreet, a aliquam metus fermentum. In et fermentum risus, eu aliquet mi. Suspendisse potenti. Duis vehicula semper ex nec luctus. Nullam interdum, mi at sagittis vulputate, leo leo ultrices enim, sit amet ultrices leo sapien non felis. In hac habitasse platea dictumst. Cras commodo, ligula eget euismod vehicula, arcu justo ultricies risus, in mattis lorem ex at leo.</p>
+      <!-- You can add more content here to test the scrollbar -->
     </div>
 
     <div class="container">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum justo at justo fermentum, at lobortis purus laoreet. Integer ut enim nec lectus tincidunt commodo. In hac habitasse platea dictumst. Vivamus porta ultrices justo nec lobortis. Nam nec condimentum orci. Nulla facilisi. Nam condimentum mauris justo, eu tincidunt lorem auctor nec. Duis quis metus non elit posuere vehicula et in lacus. Donec quis libero vel sem hendrerit suscipit. Nullam ut justo vitae tellus varius bibendum. Fusce efficitur enim vel metus dignissim placerat. Pellentesque in volutpat dui, ut tincidunt ligula. In et metus vel nulla condimentum blandit et vel lacus. Integer euismod nec ligula sed euismod. Nullam vehicula sem nec dolor iaculis luctus.</p>
-        <p>Sed sagittis tellus non dui convallis, id cursus leo suscipit. Phasellus a enim sed libero scelerisque volutpat. Nulla facilisi. Integer non turpis sit amet odio tristique convallis. Suspendisse tincidunt lorem ac augue laoreet, a aliquam metus fermentum. In et fermentum risus, eu aliquet mi. Suspendisse potenti. Duis vehicula semper ex nec luctus. Nullam interdum, mi at sagittis vulputate, leo leo ultrices enim, sit amet ultrices leo sapien non felis. In hac habitasse platea dictumst. Cras commodo, ligula eget euismod vehicula, arcu justo ultricies risus, in mattis lorem ex at leo.</p>
-        <!-- You can add more content here to test the scrollbar -->
+        <table id="topicsTable" class="topicsTable"></table>
     </div>
     <button class="button" id="logoutBtn"><span>Logout</span></button>
 
@@ -217,6 +264,66 @@
         localStorage.setItem('errorcode', 'unauthorized');
         window.location.href = '/error';
     });
+
+    writeTopics();
+
+    function writeTopics() {
+      fetch('/user/topic/list', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+      })
+      .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('writeList successful:', data);
+        let table = document.getElementById("topicsTable");
+        for (const topic of data.topics) {
+          let row = table.insertRow();
+          let cell = row.insertCell();
+          cell.id = JSON.stringify(topic.topicId);
+          cell.classList.add(JSON.stringify(topic.topicId));
+
+          let div = document.createElement('div');
+          div.innerText = topic.title;
+          div.classList.add('topicList');
+
+          let div2 = document.createElement('div');
+          const message = topic.lastMessage;
+          let sender = '';
+          if (!message.me) {
+            sender = message.sender + ': '
+          } //40
+          let messBody = message.message.substring(0, 40 - sender.length);
+          if (message.message.length > 40 - sender.length) {
+            messBody += '...';
+          }
+          if (messBody.length === 0) {
+            div.style.top = 0;
+          }
+          div2.innerText = sender + messBody;
+          div2.classList.add('lastMessage');
+          cell.appendChild(div);
+          cell.appendChild(div2);
+        }
+      })
+      .catch(error => {
+        localStorage.setItem('errorcode', 'unauthorized');
+        window.location.href = '/error';
+      });
+      const topicsCollection = function () {
+
+      }
+    }
 
     function onLogout() {
         fetch('/user/auth/logout', {
