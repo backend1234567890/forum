@@ -54,6 +54,18 @@
     border-bottom-left-radius: 0px;
   }
 
+  .container::-webkit-scrollbar {
+    width: 8px; /* Set the width of the scrollbar */
+  }
+
+  .container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5); /* Set the color of the scrollbar thumb */
+    border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+  }
+
+  .container::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.1); /* Set the color of the scrollbar track */
+  }
 
   img {
     position: relative;
@@ -270,11 +282,11 @@
     <div class="topicCreate" id="topicCreate">
       <div class="popup-content">
         <span class="close" onclick="closeTopicCreate()">&times;</span>
-        <label for="inputField" class="editdisplayname">Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
-        <input type="text" id="inputField"><br><br>
-        <label for="inputField" class="editdisplayname">Description: </label>
-        <input type="text" id="inputField"><br><br>
-        <button onclick="submitText()" class="confirmeditname">Confirm</button>
+        <label for="titlecreate" class="editdisplayname">Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
+        <input type="text" id="titlecreate"><br><br>
+        <label for="desc" class="editdisplayname">Description: </label>
+        <input type="text" id="desc"><br><br>
+        <button onclick="createTopic()" class="confirmeditname">Confirm</button>
       </div>
     </div>
 </body>
@@ -329,6 +341,10 @@
       .then(data => {
         console.log('writeList successful:', data);
         let table = document.getElementById("topicsTable");
+        while (table.rows.length > 0) {
+          // Remove the last row of the table
+          table.deleteRow(-1);
+        }
         for (const topic of data.topics) {
           let row = table.insertRow();
           let cell = row.insertCell();
@@ -462,6 +478,43 @@
         document.getElementById("dynamicContent").innerText = data.displayName;
         document.getElementById("username").innerText = data.username;
         closePopup();
+    })
+    .catch(error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.setItem('errorcode', 'unauthorized');
+            window.location.href = '/error';
+        } else {
+            alert(error)
+        }
+    });
+  }
+
+  function createTopic () {
+    var newTitle = document.getElementById("titlecreate").value;
+    var newDesc = document.getElementById("desc").value;
+    fetch('/user/topic/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        },
+        body: JSON.stringify({
+            'title': newTitle,
+            'description': newDesc
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        writeTopics();
+        closeTopicCreate();
     })
     .catch(error => {
         if (error.response && error.response.status === 401) {
