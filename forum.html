@@ -106,7 +106,7 @@
   }
 
   
-  .popup {
+    .popup {
       display: none;
       position: fixed;
       top: 50%;
@@ -119,7 +119,20 @@
       z-index: 1000;
     }
 
-    .popup-content {
+    .topicCreate {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    .popup-content .overlay {
       text-align: center;
     }
 
@@ -209,6 +222,22 @@
       font-size: 18px;
       font-weight: lighter;
     }
+
+    .addTopicBtn {
+      position: absolute;
+      top: calc(100% - 48px);
+      left: calc(40% + 20px);
+      width: 60px;
+      z-index: 1;
+    }
+
+    .addTopicBtn img {
+      transition: transform 0.3s ease;
+    }
+
+    .addTopicBtn:hover img {
+      transform: rotate(90deg);
+    }
 </style>
 </head>
 <body>
@@ -223,18 +252,31 @@
         <table id="topicsTable" class="topicsTable"></table>
     </div>
     <button class="button" id="logoutBtn"><span>Logout</span></button>
+    
+    <div class="addTopicBtn">
+      <img src="/addicon" alt="Add Topic" class="addTopicBtn" onclick="addTopicBtn()">
+    </div>
 
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
-        <div class="popup-content">
-          <span class="close" onclick="closePopup()">&times;</span>
-          <label for="inputField" class="editdisplayname">New Display Name: </label>
-          <input type="text" id="inputField">
-          <br>
-          <br>
-          <button onclick="submitText()" class="confirmeditname">Confirm</button>
-        </div>
+      <div class="popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <label for="inputField" class="editdisplayname">New Display Name: </label>
+        <input type="text" id="inputField"><br><br>
+        <button onclick="submitText()" class="confirmeditname">Confirm</button>
       </div>
+    </div>
+
+    <div class="topicCreate" id="topicCreate">
+      <div class="popup-content">
+        <span class="close" onclick="closeTopicCreate()">&times;</span>
+        <label for="inputField" class="editdisplayname">Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>
+        <input type="text" id="inputField"><br><br>
+        <label for="inputField" class="editdisplayname">Description: </label>
+        <input type="text" id="inputField"><br><br>
+        <button onclick="submitText()" class="confirmeditname">Confirm</button>
+      </div>
+    </div>
 </body>
 
 <script>
@@ -321,7 +363,6 @@
         window.location.href = '/error';
       });
       const topicsCollection = function () {
-
       }
     }
 
@@ -372,13 +413,25 @@
 
 
     function openPopup() {
-    document.getElementById("popup").style.display = "block";
-    document.getElementById("overlay").style.display = "block";
-    document.body.style.overflow = "hidden"; // Disable scrolling
-  }
+      document.getElementById("popup").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    }
+
+    function addTopicBtn() {
+      document.getElementById("topicCreate").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    }
 
   function closePopup() {
     document.getElementById("popup").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+    document.body.style.overflow = ""; // Enable scrolling
+  }
+
+  function closeTopicCreate() {
+    document.getElementById("topicCreate").style.display = "none";
     document.getElementById("overlay").style.display = "none";
     document.body.style.overflow = ""; // Enable scrolling
   }

@@ -78,6 +78,10 @@ app.get('/error', (req: Request, res: Response) => {
 app.get('/editicon', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../edit.png'));
 });
+
+app.get('/addicon', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../add.png'));
+});
 // ========================================================================= //
 // YOUR ROUTES SHOULD BE DEFINED BELOW THIS DIVIDER
 // ========================================================================= //
