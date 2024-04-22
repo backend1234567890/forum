@@ -43,7 +43,7 @@
     position: absolute;
     top: 60px; /* push the container down to avoid overlapping with the title */
     left: 0px;
-    background-color: rgba(2, 49, 16, 0.904);
+    background-color: rgba(2, 49, 16, 1);
     border-top-left-radius: 25px; 
     border-bottom-left-radius: 25px;
   }
@@ -78,6 +78,19 @@
   }
 
   .specialText::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.1); /* Set the color of the scrollbar track */
+  }
+
+  .spaceDiv::-webkit-scrollbar {
+    width: 8px; /* Set the width of the scrollbar */
+  }
+
+  .spaceDiv::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5); /* Set the color of the scrollbar thumb */
+    border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+  }
+
+  .spaceDiv::-webkit-scrollbar-track {
     background-color: rgba(255, 255, 255, 0.1); /* Set the color of the scrollbar track */
   }
 
@@ -226,7 +239,7 @@
     }
 
     .topicsTable td, .topicsTable th {
-        border: 10px solid rgba(2, 49, 16, 0.904); /* Set borders for cells */
+        border:10px solid rgba(2, 49, 16, 1); /* Set borders for cells */
         padding: 8px; /* Optional: Add padding to cells for better spacing */
     }
     
@@ -279,6 +292,10 @@
       transform: rotate(90deg);
     }
 
+    .messTable {
+      height: auto;
+    }
+
     #contextMenu {
       position: fixed;
       z-index: 1000;
@@ -326,11 +343,17 @@
       font-size: 16px;
       line-height: 1.5;
       background-color: transparent;
-      
-  position: absolute;
-  bottom: 10px; /* Adjust as needed */
-  left: 10px; /* Adjust as needed */
+      position: absolute;
+      bottom: 10px; /* Adjust as needed */
+      left: 10px; /* Adjust as needed */
+      color:aquamarine
     }
+
+    /* .messageMe {
+      right: calc(0%);
+      top: 0;
+      position: absolute;
+    } */
 </style>
 </head>
 <body>
@@ -435,7 +458,8 @@
         return response.json();
       })
       .then(data => {
-        console.log('writeList successful:', data);
+        ////consolee.log('writeList successful:', data);
+        //consolee.log(data)
         let table = document.getElementById("topicsTable");
         while (table.rows.length > 0) {
           // Remove the last row of the table
@@ -513,7 +537,7 @@
             return response.json();
         })
         .then(data => {
-            console.log('Logout successful:', data);
+            ////consolee.log('Logout successful:', data);
             
             localStorage.removeItem('token');
             window.location.href = '/';
@@ -580,7 +604,7 @@
 
   function submitText() {
     var inputText = document.getElementById("inputField").value;
-    console.log("Submitted text:", inputText);
+    ////consolee.log("Submitted text:", inputText);
     fetch('/user/auth/profile', {
         method: 'PUT',
         headers: {
@@ -682,6 +706,8 @@
     
     //Deleting existing data
     const topicId = id.substring(0, id.indexOf(" "));
+    
+    localStorage.setItem("topicid", topicId);
     if (topicId.length !== 0) {
       var topicSide = document.getElementById("topicSide");
       while (topicSide.firstChild) {
@@ -732,7 +758,9 @@
       // Set the height of the spaceDiv to fill the remaining space
       var containerHeight = topicSide.parentElement.offsetHeight; // Height of the container
       var newDivHeight = newDiv.offsetHeight; // Height of newDiv
-      spaceDiv.style.backgroundColor = 'black';
+      spaceDiv.style.backgroundColor = 'transparent';
+      spaceDiv.style.overflowY = "auto";
+      spaceDiv.classList.add('spaceDiv');
 
       var specialText = document.createElement("textarea");
       specialText.placeholder = "Type Something ...";
@@ -747,6 +775,7 @@
           if (event.key === 'Enter' && !event.shiftKey) {
               // Prevent default behavior of Enter key
               event.preventDefault();
+              sending(topicId, specialText.value, topicSide, specialText);
           }
       });
       const heighttextarea = adjustTextareaHeight(specialText);
@@ -755,6 +784,33 @@
       // Append spaceDiv below newDiv inside topicSide
       topicSide.appendChild(spaceDiv);
       topicSide.appendChild(specialText);
+      
+      
+      ////consolee.log(data);
+      var messTable = document.createElement("table");
+      messTable.classList.add("topicsTable", "messTable");
+      spaceDiv.append(messTable);
+      while (messTable.rows.length > 0) {
+        // Remove the last row of the table
+        messTable.deleteRow(-1);
+      }
+      let index = -1;
+      for (const mess of data.messages) {
+        index += 1;
+        let row = messTable.insertRow();
+        let cell = row.insertCell();
+        let sender = ""
+        var anotherDiv = document.createElement("div");
+        if (mess.me === true) {
+          cell.style.backgroundColor = "rgba(300,0,0,0.1)";
+        } else {
+          sender = mess.sender + ': ';
+        }
+        anotherDiv.innerText = sender + mess.message;
+        cell.append(anotherDiv);
+      }
+      
+      spaceDiv.scrollTop = spaceDiv.scrollHeight;
     })
     .catch(error => {
         if (error.response && error.response.status === 401) {
@@ -767,9 +823,105 @@
     }); 
   };
 
+  function sending (topicId, message, topicSide, specialText) {
+    fetch('/user/topic/' + topicId + '/message', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        },
+        body: JSON.stringify({
+          message
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    }).then(data => {
+      // while (topicSide.firstChild) {
+      //   topicSide.removeChild(topicSide.firstChild);
+      // }
+      // getTopicInfo(topicId, topicSide);
+      updateMessage(topicId, topicSide)
+      writeTopics();
+      specialText.value = "";
+    })
+    .catch(error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.setItem('errorcode', 'unauthorized');
+            window.location.href = '/error';
+        } else {
+            alert(error)
+        }
+    });  
+  }
+
+  function updateMessage(topicId, topicSide) {
+    fetch('/user/topic/' + topicId + '/info', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    }).then(data => {
+      var messTable = document.getElementsByClassName("messTable")[0];
+      var spaceDiv = document.getElementsByClassName("spaceDiv")[0];
+      
+      while (messTable.rows.length > 0) {
+        // Remove the last row of the table
+        messTable.deleteRow(-1);
+      }
+      let index = -1;
+      for (const mess of data.messages) {
+        index += 1;
+        let row = messTable.insertRow();
+        let cell = row.insertCell();
+        let sender = ""
+        var anotherDiv = document.createElement("div");
+        if (mess.me === true) {
+          cell.style.backgroundColor = "rgba(300,0,0,0.1)";
+        } else {
+          sender = mess.sender + ': ';
+        }
+        anotherDiv.innerText = sender + mess.message;
+        cell.append(anotherDiv);
+      }
+      
+      spaceDiv.scrollTop = spaceDiv.scrollHeight;
+    }).catch(error => {
+      if (error.response && error.response.status === 401) {
+        localStorage.setItem('errorcode', 'unauthorized');
+        window.location.href = '/error';
+      } else {
+        alert(error)
+      }
+    }); 
+  }
+
   function adjustTextareaHeight(textarea) {
     textarea.style.height = "auto";
-    textarea.style.height = Math.min(textarea.scrollHeight, 7 * parseFloat(window.getComputedStyle(textarea).lineHeight)) + "px";
+    ////consolee.log(textarea.scrollHeight);
+    let number = 0;
+    if (textarea.scrollHeight != 0) {
+      number = textarea.scrollHeight - 10;
+    } else {
+      number = 34;
+    }
+    textarea.style.height = Math.min(number, 7 * parseFloat(window.getComputedStyle(textarea).lineHeight)) + "px";
     return textarea.clientHeight;
   }
 
@@ -778,7 +930,7 @@
     if (heighttextarea === 0) {
       addition = 100;
     } else {
-      addition = 50;
+      addition = 42;
     }
     spaceDiv.style.height = `${existingarea - heighttextarea - addition}px`;
   }
@@ -903,5 +1055,16 @@
       contextMenu.style.display = 'none';
     });
   });
+
+
+  function routine() {
+
+    //consolee.log(localStorage.getItem('topicid'));
+    if (localStorage.getItem('topicid')) {
+    updateMessage(parseInt(localStorage.getItem('topicid')), document.getElementById("topicSide"))
+    writeTopics();
+    }
+  }
+  setInterval(routine, 6000); 
 </script>
 </html>
