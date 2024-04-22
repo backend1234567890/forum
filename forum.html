@@ -36,6 +36,7 @@
     width: calc(50% - 40px); /* half of the page width minus margin */
     height: calc(100vh - 120px); /* full height of the viewport minus margin */
     overflow-y: auto; /* add scrollbar if content overflows vertically */
+    overflow-x: hidden;
     margin: 20px;
     padding: 10px;
     border: 1px solid white;
@@ -64,6 +65,19 @@
   }
 
   .container::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.1); /* Set the color of the scrollbar track */
+  }
+
+  .specialText::-webkit-scrollbar {
+    width: 8px; /* Set the width of the scrollbar */
+  }
+
+  .specialText::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5); /* Set the color of the scrollbar thumb */
+    border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+  }
+
+  .specialText::-webkit-scrollbar-track {
     background-color: rgba(255, 255, 255, 0.1); /* Set the color of the scrollbar track */
   }
 
@@ -286,14 +300,43 @@
     .options {
       color: black;
     }
+
+    .titleDiv {
+      font-family: Akaya Kanadaka;
+      text-decoration: underline;
+      font-size: 40px;
+    }
+
+    .descDiv {
+      font-family: Akaya Kanadaka;
+      font-size: 23px;
+    }
+
+    .infoDiv {
+      box-shadow: 0 15px 10px -5px rgba(0, 255, 76, 0.3);
+    }
+
+    .specialText {
+      width: 98.5%; /* Adjusted width */
+      overflow-y: auto;
+      resize: none;    
+      border: 2px solid #ccc;
+      border-radius: 15px;
+      padding: 5px;
+      font-size: 16px;
+      line-height: 1.5;
+      background-color: transparent;
+      
+  position: absolute;
+  bottom: 10px; /* Adjust as needed */
+  left: 10px; /* Adjust as needed */
+    }
 </style>
 </head>
 <body>
     <div class="title"><span id="dynamicContent"></span><span class="username" id="username"></span><img src="/editicon" alt="Edit Display Name" onclick="openPopup()"></div>
     <div class="container">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum justo at justo fermentum, at lobortis purus laoreet. Integer ut enim nec lectus tincidunt commodo. In hac habitasse platea dictumst. Vivamus porta ultrices justo nec lobortis. Nam nec condimentum orci. Nulla facilisi. Nam condimentum mauris justo, eu tincidunt lorem auctor nec. Duis quis metus non elit posuere vehicula et in lacus. Donec quis libero vel sem hendrerit suscipit. Nullam ut justo vitae tellus varius bibendum. Fusce efficitur enim vel metus dignissim placerat. Pellentesque in volutpat dui, ut tincidunt ligula. In et metus vel nulla condimentum blandit et vel lacus. Integer euismod nec ligula sed euismod. Nullam vehicula sem nec dolor iaculis luctus.</p>
-      <p>Sed sagittis tellus non dui convallis, id cursus leo suscipit. Phasellus a enim sed libero scelerisque volutpat. Nulla facilisi. Integer non turpis sit amet odio tristique convallis. Suspendisse tincidunt lorem ac augue laoreet, a aliquam metus fermentum. In et fermentum risus, eu aliquet mi. Suspendisse potenti. Duis vehicula semper ex nec luctus. Nullam interdum, mi at sagittis vulputate, leo leo ultrices enim, sit amet ultrices leo sapien non felis. In hac habitasse platea dictumst. Cras commodo, ligula eget euismod vehicula, arcu justo ultricies risus, in mattis lorem ex at leo.</p>
-      <!-- You can add more content here to test the scrollbar -->
+      <span class="topicSide" id="topicSide"></span>
     </div>
 
     <div class="container">
@@ -424,6 +467,7 @@
           let div = document.createElement('div');
           div.innerText = topic.title;
           div.classList.add('topicList');
+          cell.appendChild(div);
 
           let div2 = document.createElement('div');
           const message = topic.lastMessage;
@@ -440,7 +484,6 @@
           }
           div2.innerText = sender + messBody;
           div2.classList.add('lastMessage');
-          cell.appendChild(div);
           cell.appendChild(div2);
         }
       })
@@ -483,7 +526,7 @@
 
     function updateValid() {
         const validTill = parseInt(localStorage.getItem('validtill'));
-        if (Date.now() > validTill) {
+        if (!validTill || Date.now() > validTill) {
             onLogout();
         }
         localStorage.setItem('validtill', Date.now() + (10 * 60 * 1000));
@@ -633,6 +676,113 @@
     }
   });
 
+  topicsTable.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent default context menu
+    const id = e.target.parentNode.id; // Get the topic ID from the parent cell
+    
+    //Deleting existing data
+    const topicId = id.substring(0, id.indexOf(" "));
+    if (topicId.length !== 0) {
+      var topicSide = document.getElementById("topicSide");
+      while (topicSide.firstChild) {
+            topicSide.removeChild(topicSide.firstChild);
+      }
+      
+      getTopicInfo(parseInt(topicId), topicSide);
+    }
+  });
+
+  function getTopicInfo (topicId, topicSide) {
+    fetch('/user/topic/' + topicId + '/info', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    }).then(data => {
+      //Creating new
+      var newDiv = document.createElement("div");
+      newDiv.classList.add("infoDiv");
+      topicSide.appendChild(newDiv); 
+
+      var titleDiv = document.createElement("div");
+      var descDiv = document.createElement("div");
+
+        // Optionally, you can add content to the inner divs
+      titleDiv.textContent = data.title;
+      descDiv.textContent = data.description;
+      titleDiv.classList.add("titleDiv")
+      descDiv.classList.add("descDiv")
+
+        // Append the inner divs to the newly created div
+      newDiv.appendChild(titleDiv);
+      newDiv.appendChild(descDiv);
+
+      var spaceDiv = document.createElement("div");
+
+      // Set the height of the spaceDiv to fill the remaining space
+      var containerHeight = topicSide.parentElement.offsetHeight; // Height of the container
+      var newDivHeight = newDiv.offsetHeight; // Height of newDiv
+      spaceDiv.style.backgroundColor = 'black';
+
+      var specialText = document.createElement("textarea");
+      specialText.placeholder = "Type Something ...";
+      specialText.style.width = "calc(95%)";
+      specialText.classList.add("specialText");
+      specialText.addEventListener("input", function() {
+          const heighttextarea = adjustTextareaHeight(this);
+          adjustSpaceDivHeight(heighttextarea, containerHeight - newDivHeight, spaceDiv);
+      });
+      specialText.addEventListener('keydown', function(event) {
+        // Check if Enter key is pressed without Shift key
+          if (event.key === 'Enter' && !event.shiftKey) {
+              // Prevent default behavior of Enter key
+              event.preventDefault();
+          }
+      });
+      const heighttextarea = adjustTextareaHeight(specialText);
+      adjustSpaceDivHeight(heighttextarea, containerHeight - newDivHeight, spaceDiv);
+      
+      // Append spaceDiv below newDiv inside topicSide
+      topicSide.appendChild(spaceDiv);
+      topicSide.appendChild(specialText);
+    })
+    .catch(error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.setItem('errorcode', 'unauthorized');
+            window.location.href = '/error';
+        } else {
+            alert(error);
+            return "error" + error.response;
+        }
+    }); 
+  };
+
+  function adjustTextareaHeight(textarea) {
+    textarea.style.height = "auto";
+    textarea.style.height = Math.min(textarea.scrollHeight, 7 * parseFloat(window.getComputedStyle(textarea).lineHeight)) + "px";
+    return textarea.clientHeight;
+  }
+
+  function adjustSpaceDivHeight(heighttextarea, existingarea, spaceDiv) {
+    let addition = 0;
+    if (heighttextarea === 0) {
+      addition = 100;
+    } else {
+      addition = 50;
+    }
+    spaceDiv.style.height = `${existingarea - heighttextarea - addition}px`;
+  }
+
   document.addEventListener('click', (e) => {
       if (!contextMenu.contains(e.target)) {
         contextMenu.style.display = 'none';
@@ -736,7 +886,6 @@
 
   document.getElementById("updating").addEventListener('click', () => {
     const topicId = document.getElementById("topicUpdate").getAttribute('topicId');
-    console.log(topicId)
     updating(topicId);
   })
 
