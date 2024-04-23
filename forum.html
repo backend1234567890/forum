@@ -1062,8 +1062,8 @@
     //consolee.log(localStorage.getItem('topicid'));
     if (localStorage.getItem('topicid') && topicSide.firstChild) {
       updateMessage(parseInt(localStorage.getItem('topicid')), document.getElementById("topicSide"))
-      writeTopics();
     }
+    writeTopics();
   }
   setInterval(routine, 6000); 
 </script>
