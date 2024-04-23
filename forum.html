@@ -1060,9 +1060,9 @@
   function routine() {
 
     //consolee.log(localStorage.getItem('topicid'));
-    if (localStorage.getItem('topicid')) {
-    updateMessage(parseInt(localStorage.getItem('topicid')), document.getElementById("topicSide"))
-    writeTopics();
+    if (localStorage.getItem('topicid') && topicSide.firstChild) {
+      updateMessage(parseInt(localStorage.getItem('topicid')), document.getElementById("topicSide"))
+      writeTopics();
     }
   }
   setInterval(routine, 6000); 
