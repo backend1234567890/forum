@@ -86,9 +86,7 @@ export const userAuthLogin = (username: string, password: string): Token => {
     throw HTTPError(400, 'incorrect username or password');
   }
 
-  if (data.tokens.some(t => t.username === username)) {
-    throw HTTPError(400, 'Already logged in');
-  }
+  data.tokens = data.tokens.filter(t => t.username !== username);
 
   let newToken = -1;
   if (data.tokens.length === 0) {
