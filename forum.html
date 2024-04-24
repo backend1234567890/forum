@@ -531,6 +531,7 @@
             div.style.top = 0;
           }
           div2.innerText = sender + messBody;
+          div2.innerText = div2.innerText.replace(/\n/g, '');
           div2.classList.add('lastMessage');
           cell.appendChild(div2);
         }
@@ -897,6 +898,12 @@
       updateMessage(topicId, topicSide)
       writeTopics();
       specialText.value = "";
+      var newDiv = document.getElementsByClassName("infoDiv")[0];
+      var spaceDiv = document.getElementsByClassName("spaceDiv")[0];
+      var containerHeight = topicSide.parentElement.offsetHeight; // Height of the container
+      var newDivHeight = newDiv.offsetHeight; // Height of newDiv
+      const heighttextarea = adjustTextareaHeight(specialText);
+      adjustSpaceDivHeight(heighttextarea, containerHeight - newDivHeight, spaceDiv);
     })
     .catch(error => {
         if (error.response && error.response.status === 401) {
