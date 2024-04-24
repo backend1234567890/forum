@@ -315,6 +315,24 @@
       background-color: #f0f0f0;
     }
 
+    #messContextMenu {
+      position: fixed;
+      z-index: 1000;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    #messContextMenu div {
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    #messContextMenu div:hover {
+      background-color: #f0f0f0;
+    }
+
     .options {
       color: black;
     }
@@ -408,6 +426,11 @@
       <div id="option1" class="options">Option 1</div>
       <div id="option2" class="options">Edit Topic</div>
       <div id="option3" class="options">Delete Topic</div>
+    </div>
+
+    <div id="messContextMenu" style="display: none;">
+      <div id="mess1" class="options">Edit Message</div>
+      <div id="mess2" class="options">Delete Message</div>
     </div>
 </body>
 
@@ -628,6 +651,7 @@
     .then(data => {
         document.getElementById("dynamicContent").innerText = data.displayName;
         document.getElementById("username").innerText = data.username;
+        document.getElementById("inputField").value = "";
         closePopup();
     })
     .catch(error => {
@@ -680,11 +704,12 @@
   const topicsTable = document.getElementById('topicsTable');
   topicsTable.addEventListener('contextmenu', (e) => {
     e.preventDefault(); // Prevent default context menu
-    const id = e.target.parentNode.id; // Get the topic ID from the parent cell
-    const topicId = id.substring(0, id.indexOf(" "));
-    contextMenu.style.left = `${e.pageX}px`; // Position the context menu
-    contextMenu.style.top = `${e.pageY}px`;
-    if (topicId.length !== 0) {
+    const targetCell = e.target.closest('td');
+    if (targetCell) {
+      const id = targetCell.id; // Get the topic ID from the parent cell
+      const topicId = id.substring(0, id.indexOf(" "));
+      contextMenu.style.left = `${e.pageX}px`; // Position the context menu
+      contextMenu.style.top = `${e.pageY}px`;
       let pin = "";
       if (id.substring(id.indexOf(" ") + 1) === 'true') {
         pin = "Unpin Topic";
@@ -696,25 +721,24 @@
       document.getElementById('option2').setAttribute('data-topic-id', topicId);
       document.getElementById('option3').setAttribute('data-topic-id', topicId);
       contextMenu.style.display = 'block'; // Display the context menu
-    } else {
-      contextMenu.style.display = 'none'; // Display the context menu
     }
   });
 
   topicsTable.addEventListener('click', (e) => {
     e.preventDefault(); // Prevent default context menu
-    const id = e.target.parentNode.id; // Get the topic ID from the parent cell
-    
-    //Deleting existing data
-    const topicId = id.substring(0, id.indexOf(" "));
-    
-    localStorage.setItem("topicid", topicId);
-    if (topicId.length !== 0) {
+    const targetCell = e.target.closest('td');
+    if (targetCell) {
+      const id = targetCell.id; // Get the topic ID from the parent cell
+      
+      //Deleting existing data
+      const topicId = id.substring(0, id.indexOf(" "));
+      
+      localStorage.setItem("topicid", topicId);
       var topicSide = document.getElementById("topicSide");
       while (topicSide.firstChild) {
             topicSide.removeChild(topicSide.firstChild);
       }
-      
+        
       getTopicInfo(parseInt(topicId), topicSide);
     }
   });
@@ -800,6 +824,7 @@
         index += 1;
         let row = messTable.insertRow();
         let cell = row.insertCell();
+        cell.id = `m${mess.messageId}`
         let sender = ""
         var anotherDiv = document.createElement("div");
         if (mess.me === true) {
@@ -812,6 +837,7 @@
       }
       
       spaceDiv.scrollTop = spaceDiv.scrollHeight;
+      rightClick(messTable);
     })
     .catch(error => {
         if (error.response && error.response.status === 401) {
@@ -823,6 +849,26 @@
         }
     }); 
   };
+
+  function rightClick(messageTable) {
+    const messContextMenu = document.getElementById('messContextMenu');
+    messageTable.addEventListener('contextmenu', handleContextMenu);
+    
+    function handleContextMenu(e) {
+      e.preventDefault(); // Prevent default context menu
+      const targetCell = e.target.closest('td'); // Get the closest cell element
+      if (targetCell) {
+        const messageId = targetCell.id.substring(1);
+        messContextMenu.style.left = `${e.pageX}px`; // Position the context menu
+        messContextMenu.style.top = `${e.pageY}px`;
+        document.getElementById('mess1').innerText = messageId;
+        document.getElementById('mess1').setAttribute('data-message-id', messageId);
+        document.getElementById('mess2').setAttribute('data-message-id', messageId);
+        messContextMenu.style.display = 'block'; // Display the context menu
+      }
+    }
+  }
+
 
   function sending (topicId, message, topicSide, specialText) {
     fetch('/user/topic/' + topicId + '/message', {
@@ -891,6 +937,7 @@
         index += 1;
         let row = messTable.insertRow();
         let cell = row.insertCell();
+        cell.id = `m${mess.messageId}`;
         let sender = ""
         var anotherDiv = document.createElement("div");
         if (mess.me === true) {
@@ -903,6 +950,7 @@
       }
       
       spaceDiv.scrollTop = spaceDiv.scrollHeight;
+      rightClick(messTable);
     }).catch(error => {
       if (error.response && error.response.status === 401) {
         localStorage.setItem('errorcode', 'unauthorized');
@@ -939,6 +987,9 @@
   document.addEventListener('click', (e) => {
       if (!contextMenu.contains(e.target)) {
         contextMenu.style.display = 'none';
+      }
+      if (!messContextMenu.contains(e.target)) {
+        messContextMenu.style.display = 'none';
       }
   });
 
@@ -1025,6 +1076,8 @@
         return response.json();
     }).then(data => {
         writeTopics();
+        document.getElementById("desc1").value="";
+        document.getElementById("titlecreate1").value="";
         closeTopicUpdate();
     })
     .catch(error => {
@@ -1057,12 +1110,54 @@
     });
   });
 
+  function deleteMessage (messageId) {
+    const topicId = localStorage.getItem('topicid');
+
+    fetch('/user/topic/' + topicId + '/message/' + messageId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                const errorMessage = error && error.error ? error.error : 'An error occurred';
+                throw new Error(errorMessage);
+            });
+        }
+        return response.json();
+    }).then(data => {
+        writeTopics();
+        updateMessage(parseInt(localStorage.getItem('topicid')), document.getElementById("topicSide"));
+    })
+    .catch(error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.setItem('errorcode', 'unauthorized');
+            window.location.href = '/error';
+        } else {
+            alert(error)
+        }
+    }); 
+  }
+
+  document.querySelectorAll('#messContextMenu div').forEach(option => {
+    option.addEventListener('click', (e) => {
+      const optionId = e.target.id; // Get the ID of the clicked option
+      const messageId = e.target.getAttribute('data-message-id');
+      if (optionId === 'mess2') {
+        deleteMessage(messageId);
+      }
+      messContextMenu.style.display = 'none';
+    });
+  });
+
 
   function routine() {
-
     //consolee.log(localStorage.getItem('topicid'));
     if (localStorage.getItem('topicid') && topicSide.firstChild) {
-      updateMessage(parseInt(localStorage.getItem('topicid')), document.getElementById("topicSide"))
+      updateMessage(parseInt(localStorage.getItem('topicid')), document.getElementById("topicSide"));
     }
     writeTopics();
   }
